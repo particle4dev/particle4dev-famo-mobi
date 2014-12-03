@@ -68,8 +68,6 @@ define('famodev/ui/papers/PapersSystem', [
         render: function () {
             return this.sequentialLayout.render();
         },
-        
-
 
         reset: function(){
             while(this._renderables.length > 0) {

@@ -199,6 +199,17 @@ define('famodev/app/PagesManager', [
                     curve: Easing.easeIn
                 },
                 // overlap: true
+            },
+            TurnOff: {
+                inOpacity: 0,
+                outOpacity: 1,
+                showOpacity: 1,
+                showTransform: Transform.identity,
+                inTransform: Transform.identity,
+                outTransform: Transform.translate(window.innerWidth * -1, 0, 0),
+                inTransition: null,
+                outTransition: null,
+                overlap: true
             }
         });
 
