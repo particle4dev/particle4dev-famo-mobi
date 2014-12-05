@@ -11,6 +11,7 @@ define('famodev/ui/papers/Paper', [
     'famous/transitions/Easing',
     'famous/utilities/Utility',
 
+    'famodev/Utils'
     ],
     function (require, exports, module) {
 
@@ -22,24 +23,26 @@ define('famodev/ui/papers/Paper', [
     var Easing                      = require('famous/transitions/Easing');
     var Utility                     = require('famous/utilities/Utility');
 
+    var Utils                       = require('famodev/Utils');
+
     var _status = {
         // in
-        inTransform: Transform.translate(0, window.innerHeight, 0),
+        inTransform: Transform.translate(0, Utils.windowHeight(), 0),
         inOpacity: 0,
-        inOrigin: [0.5, 0.5],
-        inAlign: [0.5, 0.5],
+        inOrigin: [0, 0],
+        inAlign: [0, 0],
 
         // out
-        outTransform: Transform.translate(0, window.innerHeight, 0),
+        outTransform: Transform.translate(0, Utils.windowHeight(), 0),
         outOpacity: 1,
-        outOrigin: [0.5, 0.5],
-        outAlign: [0.5, 0.5],
+        outOrigin: [0, 0],
+        outAlign: [0, 0],
 
         // show
         showTransform: Transform.translate(0, 0, 0),
         showOpacity: 1,
-        showOrigin: [0.5, 0.5],
-        showAlign: [0.5, 0.5],
+        showOrigin: [0, 0],
+        showAlign: [0, 0],
 
         inTransition: {
             duration: 250,
@@ -64,11 +67,12 @@ define('famodev/ui/papers/Paper', [
         };
 
         this.boxModifier = new Modifier({
-            align: this._boxModifier.align,
             transform: this._boxModifier.transform,
             opacity: this._boxModifier.opacity,
+            align: this._boxModifier.align,
             origin: this._boxModifier.origin,
-            size: [undefined, undefined]
+            // size: [undefined, undefined] FIXME: not work on famous 0.3.1
+            size: [Utils.windowWidth(), Utils.windowHeight()]
         });
 
         this._node.add(this.boxModifier).add(this._renderable);
@@ -99,8 +103,8 @@ define('famodev/ui/papers/Paper', [
 
             this._boxModifier.transform.set(_status.showTransform, transition, _cb);
             this._boxModifier.opacity.set(_status.showOpacity, transition, _cb);
-            this._boxModifier.origin.set(_status.showOrigin, transition, _cb);
             this._boxModifier.align.set(_status.showAlign, transition, _cb);
+            this._boxModifier.origin.set(_status.showOrigin, transition, _cb);
         },
         hide: function (callback) {
             var self = this;
@@ -118,8 +122,8 @@ define('famodev/ui/papers/Paper', [
 
             this._boxModifier.transform.set(_status.outTransform, transition, _cb);
             this._boxModifier.opacity.set(_status.outOpacity, transition, _cb);
-            this._boxModifier.origin.set(_status.outOrigin, transition, _cb);
             this._boxModifier.align.set(_status.outAlign, transition, _cb);
+            this._boxModifier.origin.set(_status.outOrigin, transition, _cb);
         },
         /**
          * Generate a render spec from the contents of this component.
