@@ -124,8 +124,8 @@ define('famodev/reactive/Each',[
                     temp.getId = function () {
                         return data.id;
                     };
-
-                    temp.pipe(this._scrollview);
+                    if(this._scrollview)
+                        temp.pipe(this._scrollview);
                     if(_.isFunction(this._beforeAddedFunction))
                         temp = this._beforeAddedFunction(temp);
 
@@ -142,7 +142,8 @@ define('famodev/reactive/Each',[
                         return id;
                     };
 
-                    temp.pipe(this._scrollview);
+                    if(this._scrollview)
+                        temp.pipe(this._scrollview);
                     if(_.isFunction(this._beforeAddedFunction))
                         temp = this._beforeAddedFunction(temp);
 
