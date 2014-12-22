@@ -3,6 +3,8 @@ define('famodev/ui/papers/Paper', [
     'exports',
     'module',
 
+    'famous/surfaces/ContainerSurface',
+
     'famous/core/RenderNode',
     'famous/core/Transform',
     'famous/core/Modifier',
@@ -14,6 +16,8 @@ define('famodev/ui/papers/Paper', [
     'famodev/Utils'
     ],
     function (require, exports, module) {
+
+    var ContainerSurface            = require('famous/surfaces/ContainerSurface');
 
     var RenderNode                  = require('famous/core/RenderNode');
     var Transform                   = require('famous/core/Transform');
@@ -56,7 +60,8 @@ define('famodev/ui/papers/Paper', [
 
     function Paper(name, renderable) {
         this._name          = name;
-        this._node          = new RenderNode();
+        // this._node          = new RenderNode();
+        this._node          = new ContainerSurface();
         this._renderable    = renderable;
 
         this._boxModifier = {
