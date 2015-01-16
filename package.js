@@ -1,6 +1,6 @@
 Package.describe({
     summary: "open source front-end framework for developing mobile apps with famous and meteor",
-    version: "0.3.0-rc4",
+    version: "0.4.0-alpha",
     name: "particle4dev:famodev",
     git: "https://particle4dev@bitbucket.org/particle4devs-team/famodev.git"
 });
@@ -50,6 +50,10 @@ Package.on_use(function(api) {
         'src/ui/toast/source.js', // stable v0.3.0
         'src/ui/papers/Paper.js', // stable v0.3.0
         'src/ui/papers/PapersSystem.js', // stable v0.3.0
+
+
+        'src/ui/PagesManager.js', // draft v0.4.0
+
 
         // from famous carousel
 

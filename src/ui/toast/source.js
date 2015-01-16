@@ -73,6 +73,9 @@ define('famodev/ui/Toast', [
                         }, this));
                     return;
                 }
+                _messageSurface.setProperties({
+                    display: 'block'
+                });
                 Toast.IS_SHOW = true;
                 Toast.toastList.push(this);
                 // if(this.options.data)
@@ -98,6 +101,9 @@ define('famodev/ui/Toast', [
                 }
                 Toast._hide(this.options.outEffect, _.bind(function () {
                     Toast.IS_SHOW = false;
+                    _messageSurface.setProperties({
+                        display: 'none'
+                    });
                     Toast.toastList.pop();
                     if(_.isFunction(cb))
                         cb();
@@ -159,7 +165,8 @@ define('famodev/ui/Toast', [
                         properties: {
                             backgroundColor: '#666',
                             lineHeight: '23px',
-                            padding: '16px 32px'
+                            padding: '16px 32px',
+                            display: 'none'
                         },
                         content: function(){
                             return _message.get();

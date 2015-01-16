@@ -31,13 +31,13 @@ define('famodev/ui/papers/Paper', [
 
     var _status = {
         // in
-        inTransform: Transform.translate(window.innerWidth, 0, 0),
+        inTransform: Transform.translate(Utils.windowWidth(), 0, 0),
         inOpacity: 0,
         inOrigin: [0, 0],
         inAlign: [0, 0],
 
         // out
-        outTransform: Transform.translate(window.innerWidth, 0, 0),
+        outTransform: Transform.translate(Utils.windowWidth(), 0, 0),
         outOpacity: 1,
         outOrigin: [0, 0],
         outAlign: [0, 0],

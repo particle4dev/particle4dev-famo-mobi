@@ -1,7 +1,7 @@
 /**
  * ReactiveSurface
  *     Display content with reactive data.
- *
+ * NOTE: check memory leak
  * @constructor
  * @extends {famous/core/Surface}
  * @status v0.3.0
