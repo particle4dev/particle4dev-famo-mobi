@@ -84,7 +84,14 @@ define('famodev/ui/papers/Paper', [
             size: [Utils.windowWidth(), Utils.windowHeight()]
         });
 
+        this._zindex = new Transitionable(0);
+
         this._node
+        .add(new Modifier({ 
+            transform: function() {
+                return Transform.translate(0, 0, this._zindex.get());
+            }.bind(this)
+        }))
         .add(this.boxModifier)
         .add(this._renderable);
     }
@@ -135,6 +142,10 @@ define('famodev/ui/papers/Paper', [
             this._boxModifier.opacity.set(_status.outOpacity, transition, _cb);
             this._boxModifier.align.set(_status.outAlign, transition, _cb);
             this._boxModifier.origin.set(_status.outOrigin, transition, _cb);
+        },
+
+        setZIndex: function (value) {
+            this._zindex.set(value);
         },
         /**
          * Generate a render spec from the contents of this component.

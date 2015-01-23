@@ -27,18 +27,18 @@ define('famodev/ui/papers/PapersSystem', [
 
     function PapersSystem(renderable) {
 
-        this.sequentialLayout = new SequentialLayout({
-            direction: 2 // trick; tat ca cac surface de nen nhau 
-        });
-        this.view = new View();
-        this.view
-        .add(new Modifier({
-            transform: Transform.translate(0, 0, 0),
-            size: [window.innerWidth, window.innerHeight],
-            inOrigin: [.5, .5],
-            inAlign: [.5, .5]
-        }))
-        .add(this.sequentialLayout);
+        // this.sequentialLayout = new SequentialLayout({
+        //     direction: 2 // trick; tat ca cac surface de nen nhau 
+        // });
+        // this.view = new View();
+        // this.view
+        // .add(new Modifier({
+        //     transform: Transform.translate(0, 0, 0),
+        //     size: [window.innerWidth, window.innerHeight],
+        //     inOrigin: [.5, .5],
+        //     inAlign: [.5, .5]
+        // }))
+        // .add(this.sequentialLayout);
 
         this._renderablesStore = new Register();
         this._renderables = [];
@@ -59,6 +59,8 @@ define('famodev/ui/papers/PapersSystem', [
         },
         show: function (name) {
             var paper = this._renderablesStore.get(name);
+            var index = this._renderables.length * 10;
+            paper.setZIndex(index);
             // var renderable = this._renderablesStore.get(name);
             // var paper = new Paper(name, renderable);
             this._renderables.push(paper);
@@ -83,6 +85,7 @@ define('famodev/ui/papers/PapersSystem', [
                 if (index > -1) {
                     this._renderables.splice(index, 1);
                 }
+                paper.setZIndex(0);
             }.bind(this));
         },
         /**
