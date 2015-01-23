@@ -88,6 +88,11 @@ define('famodev/ui/papers/PapersSystem', [
                 paper.setZIndex(0);
             }.bind(this));
         },
+        setSize: function (size) {
+            for (var i = 0; i < this._renderables.length; i++) {
+                this._renderables[i].setSize(size);
+            };
+        },
         /**
          * Generate a render spec from the contents of this component.
          *

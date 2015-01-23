@@ -80,19 +80,20 @@ define('famodev/ui/papers/Paper', [
             opacity: this._boxModifier.opacity,
             align: this._boxModifier.align,
             origin: this._boxModifier.origin,
-            // size: [undefined, undefined] FIXME: not work on famous 0.3.1
-            size: [Utils.windowWidth(), Utils.windowHeight()]
+            // size: [undefined, undefined] // FIXME: not work on famous 0.3.1
         });
 
         this._zindex = new Transitionable(0);
-
-        this._node
-        .add(new Modifier({ 
+        this._modSizeZindex = new Modifier({ 
             transform: function() {
                 return Transform.translate(0, 0, this._zindex.get());
-            }.bind(this)
-        }))
+            }.bind(this),
+            size: [Utils.windowWidth(), Utils.windowHeight()]
+        });
+
+        this._node
         .add(this.boxModifier)
+        .add(this._modSizeZindex)
         .add(this._renderable);
     }
     
@@ -146,6 +147,11 @@ define('famodev/ui/papers/Paper', [
 
         setZIndex: function (value) {
             this._zindex.set(value);
+        },
+        setSize: function (size) {
+            console.log(this._modSizeZindex.setSize);
+            console.log(size);
+            this._modSizeZindex.setSize(size);
         },
         /**
          * Generate a render spec from the contents of this component.
