@@ -4,21 +4,45 @@ define('famodev/ui/papers/PapersSystem', [
     'module',
 
     'famous/views/SequentialLayout',
-    'famodev/ui/papers/Paper'
+    'famodev/ui/papers/Paper',
 
+    'famous/surfaces/ContainerSurface',
+    'famous/core/View',
+    'famous/core/RenderNode',
+    
+    'famous/core/Transform',
+    'famous/core/Modifier'
     ],
     function (require, exports, module) {
 
     var SequentialLayout        = require('famous/views/SequentialLayout');
     var Paper                   = require('famodev/ui/papers/Paper');
 
+    var ContainerSurface            = require('famous/surfaces/ContainerSurface');
+    var View                        = require('famous/core/View');
+    var RenderNode                  = require('famous/core/RenderNode');
+    
+    var Transform                   = require('famous/core/Transform');
+    var Modifier                    = require('famous/core/Modifier');
+
     function PapersSystem(renderable) {
+
         this.sequentialLayout = new SequentialLayout({
             direction: 2 // trick; tat ca cac surface de nen nhau 
         });
+        this.view = new View();
+        this.view
+        .add(new Modifier({
+            transform: Transform.translate(0, 0, 0),
+            size: [window.innerWidth, window.innerHeight],
+            inOrigin: [.5, .5],
+            inAlign: [.5, .5]
+        }))
+        .add(this.sequentialLayout);
+
         this._renderablesStore = new Register();
         this._renderables = [];
-        this.sequentialLayout.sequenceFrom(this._renderables);
+        // this.sequentialLayout.sequenceFrom(this._renderables);
     }
     
     /**
@@ -31,9 +55,12 @@ define('famodev/ui/papers/PapersSystem', [
     _.extend(PapersSystem.prototype, {
         register: function (name, renderable) {
             this._renderablesStore.set(name, new Paper(name, renderable));
+            // this._renderablesStore.set(name, renderable);
         },
         show: function (name) {
             var paper = this._renderablesStore.get(name);
+            // var renderable = this._renderablesStore.get(name);
+            // var paper = new Paper(name, renderable);
             this._renderables.push(paper);
             setTimeout(function(){
                 paper.show();
@@ -66,9 +93,13 @@ define('famodev/ui/papers/PapersSystem', [
          * @return {number} Render spec for this component
          */
         render: function () {
-            return this.sequentialLayout.render();
+            var result = [];
+            for (var i = 0; i < this._renderables.length; i++) {
+                result.push(this._renderables[i].render());
+            };
+            return result;
+            // return this.view.render();
         },
-
         reset: function(){
             while(this._renderables.length > 0) {
                 this._renderables.pop();

@@ -1,3 +1,5 @@
+// FIXME: rewrite (use 'famodev/ui/RippleEffect')
+
 define('famodev/ui/Button', [
     'require', 
     'exports',

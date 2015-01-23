@@ -4,8 +4,9 @@ define('famodev/ui/papers/Paper', [
     'module',
 
     'famous/surfaces/ContainerSurface',
-
+    'famous/core/View',
     'famous/core/RenderNode',
+
     'famous/core/Transform',
     'famous/core/Modifier',
     'famous/transitions/Transitionable',
@@ -18,8 +19,9 @@ define('famodev/ui/papers/Paper', [
     function (require, exports, module) {
 
     var ContainerSurface            = require('famous/surfaces/ContainerSurface');
-
+    var View                        = require('famous/core/View');
     var RenderNode                  = require('famous/core/RenderNode');
+
     var Transform                   = require('famous/core/Transform');
     var Modifier                    = require('famous/core/Modifier');
     var Transitionable              = require('famous/transitions/Transitionable');
@@ -62,6 +64,8 @@ define('famodev/ui/papers/Paper', [
         this._name          = name;
         // this._node          = new RenderNode();
         this._node          = new ContainerSurface();
+        // this._node          = new View();
+
         this._renderable    = renderable;
 
         this._boxModifier = {
@@ -80,7 +84,9 @@ define('famodev/ui/papers/Paper', [
             size: [Utils.windowWidth(), Utils.windowHeight()]
         });
 
-        this._node.add(this.boxModifier).add(this._renderable);
+        this._node
+        .add(this.boxModifier)
+        .add(this._renderable);
     }
     
     /**

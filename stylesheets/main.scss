@@ -58,3 +58,10 @@ font-size: 17px;
 -moz-box-sizing: border-box;
 box-sizing: border-box;
 }
+
+.none-user-select {
+-moz-user-select: none;
+-ms-user-select: none;
+-webkit-user-select: none;
+user-select: none;
+}

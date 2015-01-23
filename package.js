@@ -47,6 +47,9 @@ Package.on_use(function(api) {
         'src/ui/Slidershow.js', // [DEPRECATED]
         'src/ui/Button.js', // stable v0.3.0
 
+        'src/ui/RippleEffect.js',
+        'src/ui/SizeAwareView.js',
+
         'src/ui/toast/source.js', // stable v0.3.0
         'src/ui/papers/Paper.js', // stable v0.3.0
         'src/ui/papers/PapersSystem.js', // stable v0.3.0
