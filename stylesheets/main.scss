@@ -30,9 +30,9 @@
 
 @import 'slide';
 
-@import 'patterns/cards';
+// @import 'patterns/cards'; it is duplicated with famous .famous-group.list
 @import 'patterns/panel';
-@import 'patterns/list';
+// @import 'patterns/list'; it is duplicated with famous .famous-group.list
 @import 'patterns/action-overflow';
 
 .button.button-icon {
