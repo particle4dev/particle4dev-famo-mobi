@@ -63,8 +63,8 @@ define('famodev/ui/papers/Paper', [
     function Paper(name, renderable) {
         this._name          = name;
         // this._node          = new RenderNode();
-        this._node          = new ContainerSurface();
-        // this._node          = new View();
+        // this._node          = new ContainerSurface();
+        this._node          = new View();
 
         this._renderable    = renderable;
 

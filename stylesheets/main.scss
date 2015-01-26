@@ -12,13 +12,13 @@
 @import 'helpers/floats';
 @import 'helpers/border';
 
-@import 'animate';
+// @import 'animate'; not use
 @import 'buttons';
-@import 'icons';
-@import 'rotations';
+// @import 'icons'; not use
+// @import 'rotations'; not use
 @import 'squares';
 @import 'heights';
-@import 'opacity';
+// @import 'opacity'; not use
 @import 'toast';
 @import 'tabs';
 @import 'checkbox';
@@ -28,12 +28,12 @@
 @import 'backdrop';
 @import 'toggle';
 
-@import 'slide';
+// @import 'slide'; not use
 
 // @import 'patterns/cards'; it is duplicated with famous .famous-group.list
 @import 'patterns/panel';
 // @import 'patterns/list'; it is duplicated with famous .famous-group.list
-@import 'patterns/action-overflow';
+// @import 'patterns/action-overflow'; not use
 
 .button.button-icon {
 border-color: transparent;
