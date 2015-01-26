@@ -35,20 +35,20 @@ define('famodev/ui/papers/Paper', [
         // in
         inTransform: Transform.translate(Utils.windowWidth(), 0, 0),
         inOpacity: 0,
-        inOrigin: [0, 0],
-        inAlign: [0, 0],
+        inOrigin: [0.5, 0.5],
+        inAlign: [0.5, 0.5],
 
         // out
         outTransform: Transform.translate(Utils.windowWidth(), 0, 0),
         outOpacity: 1,
-        outOrigin: [0, 0],
-        outAlign: [0, 0],
+        outOrigin: [0.5, 0.5],
+        outAlign: [0.5, 0.5],
 
         // show
         showTransform: Transform.translate(0, 0, 0),
         showOpacity: 1,
-        showOrigin: [0, 0],
-        showAlign: [0, 0],
+        showOrigin: [0.5, 0.5],
+        showAlign: [0.5, 0.5],
 
         inTransition: {
             duration: 250,
@@ -84,9 +84,13 @@ define('famodev/ui/papers/Paper', [
         });
 
         this._zindex = new Transitionable(0);
+        this._scale = new Transitionable(1);
         this._modSizeZindex = new Modifier({ 
             transform: function() {
-                return Transform.translate(0, 0, this._zindex.get());
+                return Transform.multiply4x4(
+                    Transform.translate(0, 0, this._zindex.get()),
+                    Transform.scale(this._scale.get(), this._scale.get(), 1)
+                );
             }.bind(this),
             size: [Utils.windowWidth(), Utils.windowHeight()]
         });
@@ -147,6 +151,12 @@ define('famodev/ui/papers/Paper', [
 
         setZIndex: function (value) {
             this._zindex.set(value);
+        },
+        setScale: function (value) {
+            this._scale.set(value, {
+                duration: 250,
+                curve: Easing.easeInOutBack
+            });
         },
         setSize: function (size) {
             console.log(this._modSizeZindex.setSize);

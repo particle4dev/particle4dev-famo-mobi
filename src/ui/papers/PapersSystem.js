@@ -11,7 +11,8 @@ define('famodev/ui/papers/PapersSystem', [
     'famous/core/RenderNode',
     
     'famous/core/Transform',
-    'famous/core/Modifier'
+    'famous/core/Modifier',
+    'famous/core/Engine'
     ],
     function (require, exports, module) {
 
@@ -24,7 +25,7 @@ define('famodev/ui/papers/PapersSystem', [
     
     var Transform                   = require('famous/core/Transform');
     var Modifier                    = require('famous/core/Modifier');
-
+    var Engine                      = require('famous/core/Engine');
     function PapersSystem(renderable) {
 
         // this.sequentialLayout = new SequentialLayout({
@@ -63,10 +64,13 @@ define('famodev/ui/papers/PapersSystem', [
             paper.setZIndex(index);
             // var renderable = this._renderablesStore.get(name);
             // var paper = new Paper(name, renderable);
-            this._renderables.push(paper);
-            setTimeout(function(){
+            var lastPaper = this._renderables[this._renderables.length -1];
+            Engine.nextTick(function() {
+                if(lastPaper && lastPaper.setScale)
+                lastPaper.setScale(0.95);
+                this._renderables.push(paper);
                 paper.show();
-            }, 0);
+            }.bind(this));
         },
         hide: function (name /** options */) {
             var paper;
@@ -74,24 +78,31 @@ define('famodev/ui/papers/PapersSystem', [
                 paper = this._renderables[this._renderables.length - 1];
             else
                 paper = this._renderablesStore.get(name);
+            var lastPaper = this._renderables[this._renderables.length -2];
+            if(lastPaper && lastPaper.setScale)
+                lastPaper.setScale(1);
             paper.hide(function(){
                 // remove
                 // this._renderablesStore.remove(name); // no remove on register, paper can be show again
                 
                 // DOESNT WORK; the dom doesn't removed from document (body) why ???
                 // this._renderables = _.without(this._renderables, paper); 
-                
                 var index = this._renderables.indexOf(paper);
-                if (index > -1) {
-                    this._renderables.splice(index, 1);
-                }
-                paper.setZIndex(0);
+                Engine.nextTick(function() {
+                    if (index > -1) {
+                        this._renderables.splice(index, 1);
+                    }
+                    paper.setZIndex(0);
+                }.bind(this));
             }.bind(this));
         },
         setSize: function (size) {
             for (var i = 0; i < this._renderables.length; i++) {
                 this._renderables[i].setSize(size);
             };
+        },
+        getRenderLength: function () {
+            return this._renderables.length;
         },
         /**
          * Generate a render spec from the contents of this component.
