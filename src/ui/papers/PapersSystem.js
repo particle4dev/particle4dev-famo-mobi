@@ -16,7 +16,6 @@ define('famodev/ui/papers/PapersSystem', [
     ],
     function (require, exports, module) {
 
-    var SequentialLayout        = require('famous/views/SequentialLayout');
     var Paper                   = require('famodev/ui/papers/Paper');
 
     var ContainerSurface            = require('famous/surfaces/ContainerSurface');
@@ -27,23 +26,8 @@ define('famodev/ui/papers/PapersSystem', [
     var Modifier                    = require('famous/core/Modifier');
     var Engine                      = require('famous/core/Engine');
     function PapersSystem(renderable) {
-
-        // this.sequentialLayout = new SequentialLayout({
-        //     direction: 2 // trick; tat ca cac surface de nen nhau 
-        // });
-        // this.view = new View();
-        // this.view
-        // .add(new Modifier({
-        //     transform: Transform.translate(0, 0, 0),
-        //     size: [window.innerWidth, window.innerHeight],
-        //     inOrigin: [.5, .5],
-        //     inAlign: [.5, .5]
-        // }))
-        // .add(this.sequentialLayout);
-
         this._renderablesStore = new Register();
         this._renderables = [];
-        // this.sequentialLayout.sequenceFrom(this._renderables);
     }
     
     /**
@@ -56,22 +40,29 @@ define('famodev/ui/papers/PapersSystem', [
     _.extend(PapersSystem.prototype, {
         register: function (name, renderable) {
             this._renderablesStore.set(name, new Paper(name, renderable));
-            // this._renderablesStore.set(name, renderable);
         },
         show: function (name) {
-            var paper = this._renderablesStore.get(name);
-            var index = this._renderables.length * 10;
-            paper.setZIndex(index);
-            // var renderable = this._renderablesStore.get(name);
-            // var paper = new Paper(name, renderable);
-            var lastPaper = this._renderables[this._renderables.length -1];
+            // NOTE: right now we not allow to call show twice
+            if(this._isRunning) {
+                console.warn('paper show is running');
+                return;
+            }
+            this._isRunning = true;
             Engine.nextTick(function() {
+                var lastPaper = this._renderables[this._renderables.length -1];
+                var paper = this._renderablesStore.get(name);
+                var index = this._renderables.length * 10;
+                paper.setZIndex(index);
                 if(lastPaper && lastPaper.setScale)
                     lastPaper.setScale(0.95);
                 this._renderables.push(paper);
                 if(this.onShow)
                     this.onShow();
-                paper.show();
+
+                var self = this;
+                paper.show(function () {
+                    self._isRunning = false;
+                });
             }.bind(this));
         },
         hide: function (name /** options */) {
@@ -90,9 +81,9 @@ define('famodev/ui/papers/PapersSystem', [
                 // this._renderablesStore.remove(name); // no remove on register, paper can be show again
                 
                 // DOESNT WORK; the dom doesn't removed from document (body) why ???
-                // this._renderables = _.without(this._renderables, paper); 
-                var index = this._renderables.indexOf(paper);
+                // this._renderables = _.without(this._renderables, paper);
                 Engine.nextTick(function() {
+                    var index = this._renderables.indexOf(paper);
                     if (index > -1) {
                         this._renderables.splice(index, 1);
                     }
@@ -121,14 +112,15 @@ define('famodev/ui/papers/PapersSystem', [
                 result.push(this._renderables[i].render());
             };
             return result;
-            // return this.view.render();
         },
+        // FIXME: check this function
         reset: function(){
             while(this._renderables.length > 0) {
                 this._renderables.pop();
             }
         }
     });
+
     /**
      * Events
      */

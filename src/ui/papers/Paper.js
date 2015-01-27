@@ -163,6 +163,9 @@ define('famodev/ui/papers/Paper', [
             console.log(size);
             this._modSizeZindex.setSize(size);
         },
+        getName: function () {
+            return this._name;
+        },
         /**
          * Generate a render spec from the contents of this component.
          *

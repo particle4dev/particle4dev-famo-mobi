@@ -81,6 +81,8 @@ define('famodev/reactive/ReactiveTemplate',[
                 if(this._rangeUpdater && this._rangeUpdater.stop){
                     this._rangeUpdater.stop();
                     this._rangeUpdater = null;
+                    // http://docs.meteor.com/#/full/blaze_remove
+                    Blaze.remove(this._blazeView)
                 }
             },
             /**
