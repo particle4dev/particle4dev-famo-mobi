@@ -67,8 +67,10 @@ define('famodev/ui/papers/PapersSystem', [
             var lastPaper = this._renderables[this._renderables.length -1];
             Engine.nextTick(function() {
                 if(lastPaper && lastPaper.setScale)
-                lastPaper.setScale(0.95);
+                    lastPaper.setScale(0.95);
                 this._renderables.push(paper);
+                if(this.onShow)
+                    this.onShow();
                 paper.show();
             }.bind(this));
         },
@@ -81,6 +83,8 @@ define('famodev/ui/papers/PapersSystem', [
             var lastPaper = this._renderables[this._renderables.length -2];
             if(lastPaper && lastPaper.setScale)
                 lastPaper.setScale(1);
+            if(this.onHide)
+                this.onHide();
             paper.hide(function(){
                 // remove
                 // this._renderablesStore.remove(name); // no remove on register, paper can be show again
