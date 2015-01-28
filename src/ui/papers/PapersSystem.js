@@ -66,6 +66,12 @@ define('famodev/ui/papers/PapersSystem', [
             }.bind(this));
         },
         hide: function (name /** options */) {
+            // NOTE: right now we not allow to call show twice
+            if(this._isRunning) {
+                console.warn('paper hide is running');
+                return;
+            }
+            this._isRunning = true;
             var paper;
             if(_.isUndefined(name)) 
                 paper = this._renderables[this._renderables.length - 1];
@@ -82,6 +88,7 @@ define('famodev/ui/papers/PapersSystem', [
                 
                 // DOESNT WORK; the dom doesn't removed from document (body) why ???
                 // this._renderables = _.without(this._renderables, paper);
+                this._isRunning = false;
                 Engine.nextTick(function() {
                     var index = this._renderables.indexOf(paper);
                     if (index > -1) {

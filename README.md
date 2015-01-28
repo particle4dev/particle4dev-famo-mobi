@@ -1,4 +1,4 @@
-releases 0.5.1
+releases 0.5.1-rc7
 
 v0.6
 - rewrite event center
