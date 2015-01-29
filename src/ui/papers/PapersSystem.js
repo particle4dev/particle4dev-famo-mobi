@@ -49,7 +49,7 @@ define('famodev/ui/papers/PapersSystem', [
             this._isRunning = true;
             Engine.nextTick(function() {
                 var lastPaper = this._renderables[this._renderables.length -1];
-                if(lastPaper.getName() == name) {
+                if(lastPaper && lastPaper.getName() == name) {
                     console.warn(name + " has really opened");
                     return;
                 }
