@@ -6,7 +6,6 @@ define('famodev/ui/papers/PapersSystem', [
     'famous/views/SequentialLayout',
     'famodev/ui/papers/Paper',
 
-    'famous/surfaces/ContainerSurface',
     'famous/core/View',
     'famous/core/RenderNode',
     
@@ -18,7 +17,6 @@ define('famodev/ui/papers/PapersSystem', [
 
     var Paper                   = require('famodev/ui/papers/Paper');
 
-    var ContainerSurface            = require('famous/surfaces/ContainerSurface');
     var View                        = require('famous/core/View');
     var RenderNode                  = require('famous/core/RenderNode');
     
@@ -41,8 +39,9 @@ define('famodev/ui/papers/PapersSystem', [
         register: function (name, renderable) {
             this._renderablesStore.set(name, new Paper(name, renderable));
         },
-        show: function (name) {
+        show: function (name, callback) {
             // NOTE: right now we not allow to call show twice
+            // or show paper twice
             if(this._isRunning) {
                 console.warn('paper show is running');
                 return;
@@ -50,6 +49,10 @@ define('famodev/ui/papers/PapersSystem', [
             this._isRunning = true;
             Engine.nextTick(function() {
                 var lastPaper = this._renderables[this._renderables.length -1];
+                if(lastPaper.getName() == name) {
+                    console.warn(name + " has really opened");
+                    return;
+                }
                 var paper = this._renderablesStore.get(name);
                 var index = this._renderables.length * 10;
                 paper.setZIndex(index);
@@ -62,11 +65,13 @@ define('famodev/ui/papers/PapersSystem', [
                 var self = this;
                 paper.show(function () {
                     self._isRunning = false;
+                    if(_.isFunction(callback))
+                        callback();
                 });
             }.bind(this));
         },
-        hide: function (name /** options */) {
-            // NOTE: right now we not allow to call show twice
+        hide: function (name, callback) {
+            // NOTE: right now we not allow to call show when is running
             if(this._isRunning) {
                 console.warn('paper hide is running');
                 return;
@@ -96,6 +101,8 @@ define('famodev/ui/papers/PapersSystem', [
                     }
                     paper.setZIndex(0);
                 }.bind(this));
+                if(_.isFunction(callback))
+                    callback();
             }.bind(this));
         },
         setSize: function (size) {

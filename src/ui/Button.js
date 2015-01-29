@@ -1,5 +1,5 @@
 // FIXME: rewrite (use 'famodev/ui/RippleEffect')
-
+// http://jsbin.com/nunojobuye/1/edit?html,output
 define('famodev/ui/Button', [
     'require', 
     'exports',
