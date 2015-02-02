@@ -51,6 +51,8 @@ Package.on_use(function(api) {
         'src/ui/SizeAwareView.js',
 
         'src/ui/toast/source.js', // stable v0.3.0
+        'src/ui/toast/ToastsCenter.js', // stable v0.5.9
+
         'src/ui/papers/Paper.js', // stable v0.3.0
         'src/ui/papers/PapersSystem.js', // stable v0.3.0
 
