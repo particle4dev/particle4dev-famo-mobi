@@ -6,7 +6,8 @@
  * @extends {}
  * @status v0.3.0
  */
-// FIXME: Think about template content
+// FIXME:
+// Think about template content
 // and position
 
 define('famodev/ui/Toast', [

@@ -292,3 +292,186 @@ define('famodev/ui/RippleEffect', [
 
 //     });
 // });
+
+define('famodev/ui/RippleEffect2', [
+    'require', 
+    'exports',
+    'module',
+    'famous/core/Surface',
+    'famous/core/Transform',
+    'famous/transitions/Transitionable'
+    ], function (require, exports, module) {
+    'use strict';
+
+    var Surface             = require('famous/core/Surface');
+    var Transform           = require('famous/core/Transform');
+    var Transitionable      = require('famous/transitions/Transitionable');
+
+    function RippleEffect2(options) {
+        Surface.apply(this, arguments);
+
+        this.gradientOpacity = new Transitionable(0.1);
+        this.gradientSize = new Transitionable(0);
+        this.offsetX = 0;
+        this.offsetY = 0;
+
+        var _runAnimation = function(){
+            this.gradientSize.set(Math.sqrt(this._realSize[0] * this._realSize[0] + this._realSize[1] * this._realSize[1]), {
+                duration: 1000,
+                curve: 'easeOut'
+            });
+        }.bind(this);
+
+        var _stopAnimation = function(){
+            this.gradientSize
+            .halt()
+            .set(Math.sqrt(this._realSize[0] * this._realSize[0] + this._realSize[1] * this._realSize[1]), {
+                duration: 250,
+                curve: 'easeOut'
+            }, function(){
+
+            }.bind(this));
+
+            this.gradientOpacity
+            .halt()
+            .set(0, {
+                duration: 250,
+                curve: 'easeOut'
+            });
+        }.bind(this);
+
+        this.runAnimation = function(data){
+            if (!data.detail) {
+                return;
+            }
+            console.log(this.options.event != 'mousedown-mouseup', data, this._realSize);
+            this.offsetX = (data.offsetX || data.layerX) + 'px';
+            this.offsetY = (data.offsetY || data.layerY) + 'px';
+
+            this.gradientOpacity.set(0.25, {
+                duration: 150,
+                curve: 'easeOut'
+            });
+            this.gradientSize.set(0);
+
+            _runAnimation();
+        };
+        this.stopAnimation = _stopAnimation;
+
+        if(this.options)
+            this.options = {};
+        if(options && options.event)
+            this.options.event = options.event;
+        this._addEvents();
+    }
+
+    RippleEffect2.prototype = Object.create(Surface.prototype);
+    RippleEffect2.prototype.constructor = RippleEffect2;
+
+    RippleEffect2.prototype._addEvents = function(){
+        this.on('mousedown', function (data) {
+            if(this.options.event != 'mousedown-mouseup')
+                return;
+            this.runAnimation(data);
+        }.bind(this));
+
+        this.on('mouseup', function () {
+            if(this.options.event != 'mousedown-mouseup')
+                return;
+            this.stopAnimation();
+        }.bind(this));
+
+        this.on('mouseleave', function () {
+            this.stopAnimation();
+        }.bind(this));
+
+        this.on('click', function (data) {
+            if(this.options.event != 'click')
+                return;
+            this.runAnimation(data);
+            setTimeout(function () {
+                this.stopAnimation();
+            }.bind(this), 300);
+        }.bind(this));
+    };
+
+    RippleEffect2.prototype.render = function () {
+        var gradientOpacity = this.gradientOpacity.get();
+        var gradientSize = this.gradientSize.get();
+
+        this.setProperties({
+            backgroundImage: 'radial-gradient(circle at '
+                + this.offsetX + ' '
+                + this.offsetY + ', rgba(0,0,0,'
+                + gradientOpacity + '), rgba(0,0,0,'
+                + gradientOpacity + ') '
+                + gradientSize + 'px, rgba(255,255,255,'
+                + gradientOpacity + ') '
+                + gradientSize + 'px)'
+        });
+        // return what Surface expects
+        return this.id;
+    };
+
+    /**
+     * wrap a deploy function so we can get real size of surface.
+     *
+     */
+    var originDeploy = RippleEffect2.prototype.deploy;
+    RippleEffect2.prototype.deploy = function deploy(target) {
+        originDeploy.call(this, target);
+
+        var width = target.offsetWidth;
+        var height = target.offsetHeight;
+        this._realSize = [width, height];
+    };
+
+    module.exports = RippleEffect2;
+});
+
+Meteor.startup(function () {
+    require([
+        'require',
+        'exports',
+        'module',
+        'famous/core/Engine',
+        'famous/core/Transform',
+        'famous/modifiers/StateModifier',
+        'famous/core/Surface',
+        'famous/core/View',
+        'famodev/ui/RippleEffect2'
+        ], function (require, exports, module) {
+        var Engine              = require('famous/core/Engine');
+        var Transform           = require('famous/core/Transform');
+        var StateModifier       = require('famous/modifiers/StateModifier');
+        var Surface             = require('famous/core/Surface');
+        var View                = require('famous/core/View');
+
+        var RippleEffect        = require('famodev/ui/RippleEffect2');
+
+        var mainContext = Engine.createContext();
+
+        var surface = new RippleEffect({
+            event: 'mousedown-mouseup',
+            content: 'Big Button',
+            size: [undefined, undefined],
+            properties: {
+                fontFamily: 'Helvetica Neue',
+                fontSize: '18px',
+                fontWeight: '300',
+                textAlign: 'center',
+                lineHeight: '44px',
+                backgroundColor: '#1abc9c'
+            },
+            classes: ['none-user-select']
+        });
+
+        mainContext
+        .add(new StateModifier({
+            size: [200, 200],
+            transform: Transform.translate(50, 50, 0)
+        }))
+        .add(surface);
+
+    });
+});

@@ -15,8 +15,8 @@ Package.on_use(function(api) {
         api.versionsFrom('METEOR@0.9.2');
     api.use(['underscore', 'tracker', 'reactive-var', 'observe-sequence', 'ui', 'blaze', 'templating'], client);
     api.use(['particle4dev:famous@1.2.1'], client);
-    api.use(['particle4dev:sass@0.2.9'], both);
-    api.imply(['particle4dev:sass@0.2.9'], both);
+    api.use(['particle4dev:sass@1.2.0'], both);
+    api.imply(['particle4dev:sass@1.2.0'], both);
     api.add_files([
         'stylesheets/main.scss',
 
@@ -51,6 +51,8 @@ Package.on_use(function(api) {
         'src/ui/SizeAwareView.js',
 
         'src/ui/toast/source.js', // stable v0.3.0
+        'src/ui/toast/ToastsCenter.js', // stable v0.5.9
+
         'src/ui/papers/Paper.js', // stable v0.3.0
         'src/ui/papers/PapersSystem.js', // stable v0.3.0
 
