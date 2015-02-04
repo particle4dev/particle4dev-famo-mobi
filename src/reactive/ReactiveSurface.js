@@ -50,7 +50,16 @@ define('famodev/reactive/ReactiveSurface',[
             },
             //wrap up cleanup method
             cleanup: function (allocator) {
+                // this._reactiveSession.stop();
                 this.emit('destroyed');
+                // http://stackoverflow.com/a/3955238/2104729
+                // FIXME : some how famous surface doest remove all child elements on it
+                // it should be, but i dont know why ?
+                // so we have to remove by my self.
+                // need check this again
+                while (this._currentTarget.firstChild) {
+                    this._currentTarget.removeChild(this._currentTarget.firstChild);
+                }
                 cleanup.call(this, allocator);
             },
             //this function will save content in document.createDocumentFragment();
@@ -91,7 +100,7 @@ define('famodev/reactive/ReactiveSurface',[
 //                 background: 'red'
 //             },
 //             content: function(){
-//                 return Session.get('session');
+//                 return '<h1>' + Session.get('session') + '</h1>';
 //             }
 //         });
 
@@ -127,10 +136,10 @@ define('famodev/reactive/ReactiveSurface',[
 //                 // re add
 //                 Meteor.setTimeout(function(){
 //                     node.set(sur);
-//                 }, 1000);
+//                 }, 10000);
 
-//             }, 1000);
-//         }, 1000);
+//             }, 10000);
+//         }, 10000);
 //     });
 // });
 

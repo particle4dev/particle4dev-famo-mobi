@@ -429,49 +429,49 @@ define('famodev/ui/RippleEffect2', [
     module.exports = RippleEffect2;
 });
 
-Meteor.startup(function () {
-    require([
-        'require',
-        'exports',
-        'module',
-        'famous/core/Engine',
-        'famous/core/Transform',
-        'famous/modifiers/StateModifier',
-        'famous/core/Surface',
-        'famous/core/View',
-        'famodev/ui/RippleEffect2'
-        ], function (require, exports, module) {
-        var Engine              = require('famous/core/Engine');
-        var Transform           = require('famous/core/Transform');
-        var StateModifier       = require('famous/modifiers/StateModifier');
-        var Surface             = require('famous/core/Surface');
-        var View                = require('famous/core/View');
+// Meteor.startup(function () {
+//     require([
+//         'require',
+//         'exports',
+//         'module',
+//         'famous/core/Engine',
+//         'famous/core/Transform',
+//         'famous/modifiers/StateModifier',
+//         'famous/core/Surface',
+//         'famous/core/View',
+//         'famodev/ui/RippleEffect2'
+//         ], function (require, exports, module) {
+//         var Engine              = require('famous/core/Engine');
+//         var Transform           = require('famous/core/Transform');
+//         var StateModifier       = require('famous/modifiers/StateModifier');
+//         var Surface             = require('famous/core/Surface');
+//         var View                = require('famous/core/View');
 
-        var RippleEffect        = require('famodev/ui/RippleEffect2');
+//         var RippleEffect        = require('famodev/ui/RippleEffect2');
 
-        var mainContext = Engine.createContext();
+//         var mainContext = Engine.createContext();
 
-        var surface = new RippleEffect({
-            event: 'mousedown-mouseup',
-            content: 'Big Button',
-            size: [undefined, undefined],
-            properties: {
-                fontFamily: 'Helvetica Neue',
-                fontSize: '18px',
-                fontWeight: '300',
-                textAlign: 'center',
-                lineHeight: '44px',
-                backgroundColor: '#1abc9c'
-            },
-            classes: ['none-user-select']
-        });
+//         var surface = new RippleEffect({
+//             event: 'mousedown-mouseup',
+//             content: 'Big Button',
+//             size: [undefined, undefined],
+//             properties: {
+//                 fontFamily: 'Helvetica Neue',
+//                 fontSize: '18px',
+//                 fontWeight: '300',
+//                 textAlign: 'center',
+//                 lineHeight: '44px',
+//                 backgroundColor: '#1abc9c'
+//             },
+//             classes: ['none-user-select']
+//         });
 
-        mainContext
-        .add(new StateModifier({
-            size: [200, 200],
-            transform: Transform.translate(50, 50, 0)
-        }))
-        .add(surface);
+//         mainContext
+//         .add(new StateModifier({
+//             size: [200, 200],
+//             transform: Transform.translate(50, 50, 0)
+//         }))
+//         .add(surface);
 
-    });
-});
+//     });
+// });
