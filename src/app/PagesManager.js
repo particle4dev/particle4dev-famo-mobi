@@ -44,6 +44,9 @@ define('famodev/app/PagesManager', [
                 var pageModule = require(path);
                 pages[path] = new pageModule(options);
             };
+            this['getPage'] = function (path) {
+                return pages[path];
+            };
             this['defaultPage'] = function (page) {
                 if(page)
                     return defaultPage = page;
@@ -74,6 +77,11 @@ define('famodev/app/PagesManager', [
             };
         };
 
+        // Methods
+        _.extend(PagesManager.prototype, {
+
+        });
+        
         // static value
         _.extend(PagesManager, {
             HideOutgoingSpringIn: {
