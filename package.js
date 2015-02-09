@@ -1,6 +1,6 @@
 Package.describe({
     summary: "open source front-end framework for developing mobile apps with famous and meteor",
-    version: "0.5.9",
+    version: "0.6.0",
     name: "particle4dev:famodev",
     git: "https://particle4dev@bitbucket.org/particle4devs-team/famodev.git"
 });
@@ -14,6 +14,7 @@ Package.on_use(function(api) {
     if (api.versionsFrom)
         api.versionsFrom('METEOR@0.9.2');
     api.use(['underscore', 'tracker', 'reactive-var', 'observe-sequence', 'ui', 'blaze', 'templating'], client);
+    api.use(['ejson'], both);
     api.use(['particle4dev:famous@1.2.1'], client);
     api.use(['particle4dev:sass@1.2.0'], both);
     api.imply(['particle4dev:sass@1.2.0'], both);
@@ -24,7 +25,8 @@ Package.on_use(function(api) {
         'src/utils/helpers.js',
         'src/utils/pipeline.js',
         'src/utils/register.js',
-        
+        'src/utils/eventemitter2.js',
+
         // reactive
         'src/reactive/ReactiveSession.js', // stable v0.3.0
         'src/reactive/ReactiveCursor.js', // stable v0.3.0

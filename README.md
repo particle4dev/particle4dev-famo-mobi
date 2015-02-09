@@ -1,14 +1,11 @@
-releases 0.5.9
+releases 0.6.0
 
-v0.5.10
+v0.6.1
 - viet lai RippleEffect (draft - 1)
   chuyen sang dang ke thua
 - viet lai ui/button su dung RippleEffect
 
-v0.5.11
-- rewrite event center
-
-v0.6
+v0.6.2
 - Viet router
 
 Draft

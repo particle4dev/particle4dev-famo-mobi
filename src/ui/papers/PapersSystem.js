@@ -3,19 +3,18 @@ define('famodev/ui/papers/PapersSystem', [
     'exports',
     'module',
 
-    'famous/views/SequentialLayout',
     'famodev/ui/papers/Paper',
 
     'famous/core/View',
     'famous/core/RenderNode',
-    
     'famous/core/Transform',
     'famous/core/Modifier',
-    'famous/core/Engine'
+    'famous/core/Engine',
+    'famous/core/ViewSequence'
     ],
     function (require, exports, module) {
 
-    var Paper                   = require('famodev/ui/papers/Paper');
+    var Paper                       = require('famodev/ui/papers/Paper');
 
     var View                        = require('famous/core/View');
     var RenderNode                  = require('famous/core/RenderNode');
@@ -23,7 +22,9 @@ define('famodev/ui/papers/PapersSystem', [
     var Transform                   = require('famous/core/Transform');
     var Modifier                    = require('famous/core/Modifier');
     var Engine                      = require('famous/core/Engine');
-    function PapersSystem(renderable) {
+    var ViewSequence                = require('famous/core/ViewSequence');
+
+    function PapersSystem() {
         this._renderablesStore = new Register();
         this._renderables = [];
     }
@@ -56,8 +57,11 @@ define('famodev/ui/papers/PapersSystem', [
                 var paper = this._renderablesStore.get(name);
                 var index = this._renderables.length * 10;
                 paper.setZIndex(index);
-                if(lastPaper && lastPaper.setScale)
-                    lastPaper.setScale(0.95);
+                if(lastPaper && lastPaper.setScale) {
+                    lastPaper.setScale(0.95, function () {
+                        lastPaper.turnOffRenderOnPage();
+                    });
+                }
                 this._renderables.push(paper);
                 if(this.onShow)
                     this.onShow();
@@ -83,8 +87,10 @@ define('famodev/ui/papers/PapersSystem', [
             else
                 paper = this._renderablesStore.get(name);
             var lastPaper = this._renderables[this._renderables.length -2];
-            if(lastPaper && lastPaper.setScale)
+            if(lastPaper && lastPaper.setScale) {
+                lastPaper.turnOnRenderOnPage();
                 lastPaper.setScale(1);
+            }
             if(this.onHide)
                 this.onHide();
             paper.hide(function(){
@@ -467,3 +473,84 @@ define('famodev/ui/papers/PapersSystem', [
 //     });
 
 // });
+
+
+
+// rewrite
+define('famodev/ui/papers/PapersSystem2', [
+    'require', 
+    'exports',
+    'module',
+    'famodev/ui/papers/Intent',
+    ],
+    function (require, exports, module) {
+
+    var Intent              = require('famodev/ui/papers/Intent');
+
+    function PapersSystem() {
+        this.class = {};
+    }
+    
+    /**
+     * Add Views
+     */
+    PapersSystem.Intent = Intent;
+    /**
+     * Methods
+     */
+    _.extend(PapersSystem.prototype, {
+        /**
+         * 
+         *
+         */
+        createPaper: function(name, func){
+            if(this.class[name])
+                throw new Error(name + ' was be registered');
+            if(!_.isFunction(func))
+                throw new Error('class must be a function');
+            this.class[name] = func;
+        }
+    });
+
+    /**
+     * Events
+     */
+
+    module.exports = PapersSystem;
+
+});
+
+define('famodev/ui/papers/Intent', [
+    'require', 
+    'exports',
+    'module'
+    ],
+    function (require, exports, module) {
+
+    function Intent (data, func, papersSystem) {
+
+    }
+    
+    /**
+     * Add Views
+     */
+
+    /**
+     * Methods
+     */
+    _.extend(Intent.prototype, {
+        start: function () {
+
+        },
+        finish: function () {
+
+        }
+    });
+
+    /**
+     * Events
+     */
+
+    module.exports = Intent;
+
+});

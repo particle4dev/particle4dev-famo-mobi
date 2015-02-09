@@ -3,9 +3,7 @@ define('famodev/ui/papers/Paper', [
     'exports',
     'module',
 
-    'famous/surfaces/ContainerSurface',
-    'famous/core/View',
-    'famous/core/RenderNode',
+    'famous/core/Group',
 
     'famous/core/Transform',
     'famous/core/Modifier',
@@ -18,9 +16,7 @@ define('famodev/ui/papers/Paper', [
     ],
     function (require, exports, module) {
 
-    var ContainerSurface            = require('famous/surfaces/ContainerSurface');
-    var View                        = require('famous/core/View');
-    var RenderNode                  = require('famous/core/RenderNode');
+    var Group                       = require('famous/core/Group');
 
     var Transform                   = require('famous/core/Transform');
     var Modifier                    = require('famous/core/Modifier');
@@ -62,9 +58,7 @@ define('famodev/ui/papers/Paper', [
 
     function Paper(name, renderable) {
         this._name          = name;
-        // this._node          = new RenderNode();
-        // this._node          = new ContainerSurface();
-        this._node          = new View();
+        this._node          = new Group();
 
         this._renderable    = renderable;
 
@@ -152,20 +146,41 @@ define('famodev/ui/papers/Paper', [
         setZIndex: function (value) {
             this._zindex.set(value);
         },
-        setScale: function (value) {
+        setScale: function (value, callback) {
             this._scale.set(value, {
                 duration: 250,
                 curve: Easing.easeInOutBack
-            });
+            }, callback);
         },
         setSize: function (size) {
-            console.log(this._modSizeZindex.setSize);
-            console.log(size);
             this._modSizeZindex.setSize(size);
         },
         getName: function () {
             return this._name;
         },
+
+        /**
+         * Hide paper on screen, browser will be ignored and not painted this page.
+         *
+         * @private
+         * @method turnOffRenderOnPage
+         * @return {null}
+         */
+        turnOffRenderOnPage: function () {
+            this._node.setProperties({display: 'none'});
+        },
+
+        /**
+         * Display paper on screen
+         *
+         * @private
+         * @method turnOnRenderOnPage
+         * @return {null}
+         */
+        turnOnRenderOnPage: function () {
+            this._node.setProperties({display: 'block'});
+        },
+
         /**
          * Generate a render spec from the contents of this component.
          *
