@@ -1,3 +1,4 @@
+// [DEPRECATED]
 // ??? need this? maybe it is factory pattern
 define('famodev/reactive/ReactiveObject',[
     'require', 

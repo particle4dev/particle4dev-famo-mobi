@@ -2,15 +2,13 @@ define('famodev/ui/tabs/TabBar', [
     'require', 
     'exports',
     'module',
-    'famous/utilities/Utility',
-    'famous/core/View',
-    'famous/views/GridLayout',
+
     'famodev/ui/tabs/TabButton'
     ], function(require, exports, module) {
 
-        var Utility         = require('famous/utilities/Utility');
-        var View            = require('famous/core/View');
-        var GridLayout      = require('famous/views/GridLayout');
+        var Utility         = famous.utilities.Utility;
+        var View            = famous.core.View;
+        var GridLayout      = famous.views.GridLayout;
         var ToggleButton    = require('famodev/ui/tabs/TabButton');
 
         /**

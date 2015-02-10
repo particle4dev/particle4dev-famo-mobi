@@ -1,15 +1,12 @@
 define('famodev/ui/SizeAwareView', [
     'require', 
     'exports',
-    'module',
-    'famous/core/View',
-    'famous/core/Entity',
-    'famous/core/Transform'
+    'module'
     ],
     function(require, exports, module) {
-    var View      = require('famous/core/View');
-    var Entity    = require('famous/core/Entity');
-    var Transform = require('famous/core/Transform');
+    var View      = famous.core.View;
+    var Entity    = famous.core.Entity;
+    var Transform = famous.core.Transform;
 
     // https://github.com/Famous/scene/blob/master/SizeAwareView.js
     /*

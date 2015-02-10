@@ -10,12 +10,11 @@ define('famodev/reactive/SurfaceIf', [
     'require', 
     'exports',
     'module',
-    'famous/core/Surface',
     'famodev/reactive/ReactiveSession'
     ],
     function(require, exports, module){
 
-        var Surface             = require('famous/core/Surface');
+        var Surface             = famous.core.Surface;
         var ReactiveSession     = require('famodev/reactive/ReactiveSession');
 
         function SurfaceIf (options) {

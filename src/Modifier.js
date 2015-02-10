@@ -2,18 +2,14 @@ define('famodev/Modifier',[
     'require', 
     'exports',
     'module',
-    'famous/core/Modifier',
-    'famous/transitions/Transitionable',
-    'famous/transitions/TransitionableTransform',
-    'famous/core/Transform',
     'famodev/Utils'
     ],
     function (require, exports, module) {
         
-        var Modifier                = require('famous/core/Modifier');
-        var Transitionable          = require('famous/transitions/Transitionable');
-        var TransitionableTransform = require('famous/transitions/TransitionableTransform');
-        var Transform               = require('famous/core/Transform');
+        var Modifier                = famous.core.Modifier;
+        var Transform               = famous.core.Transform;
+        var TransitionableTransform = famous.transitions.TransitionableTransform;
+        var Transitionable          = famous.transitions.Transitionable;
 
         var Utils                   = require('famodev/Utils');
 

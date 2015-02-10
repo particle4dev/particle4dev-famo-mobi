@@ -9,12 +9,11 @@
 define('famodev/reactive/ReactiveTemplate',[
     'require', 
     'exports',
-    'module',
-    'famous/core/Surface'
+    'module'
     ],
     function(require, exports, module){
 
-        var Surface             = require('famous/core/Surface');
+        var Surface             = famous.core.Surface;
 
         function ReactiveTemplate (options){
             Surface.apply(this, arguments);

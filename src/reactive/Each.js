@@ -11,12 +11,6 @@ define('famodev/reactive/Each',[
     'require', 
     'exports',
     'module',
-    'famous/core/ViewSequence',
-    'famous/core/Surface',
-    'famous/core/Transform',
-    'famous/core/EventHandler',
-    'famous/transitions/Transitionable',
-    'famous/core/RenderNode',
 
     'famodev/Node',
     'famodev/Modifier',
@@ -25,12 +19,12 @@ define('famodev/reactive/Each',[
     ],
     function (require, exports, module) {
 
-        var ViewSequence    = require('famous/core/ViewSequence');
-        var Surface         = require('famous/core/Surface');
-        var Transform       = require('famous/core/Transform');
-        var EventHandler    = require('famous/core/EventHandler');
-        var Transitionable  = require('famous/transitions/Transitionable');
-        var RenderNode      = require('famous/core/RenderNode');
+        var ViewSequence    = famous.core.ViewSequence;
+        var Surface         = famous.core.Surface;
+        var Transform       = famous.core.Transform;
+        var EventHandler    = famous.core.EventHandler;
+        var RenderNode      = famous.core.RenderNode;
+        var Transitionable  = famous.transitions.Transitionable;
 
         var Node            = require('famodev/Node');
         var Modifier        = require('famodev/Modifier');

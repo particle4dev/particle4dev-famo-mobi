@@ -2,19 +2,15 @@ define('famodev/Node',[
     'require', 
     'exports',
     'module',
-    'famous/core/RenderNode',
-    'famous/inputs/GenericSync',
-    'famous/inputs/MouseSync',
-    'famous/inputs/TouchSync',
 
     'famodev/Modifier'
     ],
     function (require, exports, module) {
 
-        var RenderNode          = require('famous/core/RenderNode');
-        var GenericSync         = require('famous/inputs/GenericSync');
-        var MouseSync           = require('famous/inputs/MouseSync');
-        var TouchSync           = require('famous/inputs/TouchSync');
+        var RenderNode          = famous/core/RenderNode;
+        var GenericSync         = famous/inputs/GenericSync;
+        var MouseSync           = famous/inputs/MouseSync;
+        var TouchSync           = famous/inputs/TouchSync;
 
         var Modifier            = require('famodev/Modifier');
 

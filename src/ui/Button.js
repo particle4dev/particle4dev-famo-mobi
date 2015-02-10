@@ -3,16 +3,13 @@
 define('famodev/ui/Button', [
     'require', 
     'exports',
-    'module',
-    'famous/core/Surface',
-    'famous/core/Transform',
-    'famous/transitions/Transitionable'
+    'module'
     ], function (require, exports, module) {
     'use strict';
 
-    var Surface             = require('famous/core/Surface');
-    var Transform           = require('famous/core/Transform');
-    var Transitionable      = require('famous/transitions/Transitionable');
+    var Surface             = famous.core.Surface;
+    var Transform           = famous.core.Transform;
+    var Transitionable      = famous.transitions.Transitionable;
 
     function ButtonSurface() {
         Surface.apply(this, arguments);

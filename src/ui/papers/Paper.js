@@ -3,27 +3,17 @@ define('famodev/ui/papers/Paper', [
     'exports',
     'module',
 
-    'famous/core/Group',
-
-    'famous/core/Transform',
-    'famous/core/Modifier',
-    'famous/transitions/Transitionable',
-    'famous/transitions/TransitionableTransform',
-    'famous/transitions/Easing',
-    'famous/utilities/Utility',
-
     'famodev/Utils'
     ],
     function (require, exports, module) {
 
-    var Group                       = require('famous/core/Group');
-
-    var Transform                   = require('famous/core/Transform');
-    var Modifier                    = require('famous/core/Modifier');
-    var Transitionable              = require('famous/transitions/Transitionable');
-    var TransitionableTransform     = require('famous/transitions/TransitionableTransform');
-    var Easing                      = require('famous/transitions/Easing');
-    var Utility                     = require('famous/utilities/Utility');
+    var Group                       = famous.core.Group;
+    var Transform                   = famous.core.Transform;
+    var Modifier                    = famous.core.Modifier;
+    var Transitionable              = famous.transitions.Transitionable;
+    var TransitionableTransform     = famous.transitions.TransitionableTransform;
+    var Easing                      = famous.transitions.Easing;
+    var Utility                     = famous.utilities.Utility;
 
     var Utils                       = require('famodev/Utils');
 

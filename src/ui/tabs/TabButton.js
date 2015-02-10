@@ -1,13 +1,11 @@
 define('famodev/ui/tabs/TabButton', [
     'require', 
     'exports',
-    'module',
-    'famous/core/Surface',
-    'famous/core/EventHandler'
+    'module'
     ], function(require, exports, module) {
 
-        var Surface         = require('famous/core/Surface');
-        var EventHandler    = require('famous/core/EventHandler');
+        var Surface         = famous.core.Surface;
+        var EventHandler    = famous.core.EventHandler;
 
         function TabButton(options) {
             this._eventOutput = new EventHandler();

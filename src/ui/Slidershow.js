@@ -1,27 +1,19 @@
 // [DEPRECATED]
 define('famodev/ui/Slidershow', [
-	'require', 
+    'require', 
     'exports',
     'module',
-    'famous/core/Surface',
-    'famous/core/Modifier',
-    'famous/core/Transform',
-    'famous/core/EventHandler',
-    'famous/core/OptionsManager',
-    'famous/core/View',
-    'famous/surfaces/ContainerSurface',
-    'famous/utilities/Utility',
     'famodev/Utils'
-	], function (require, exports, module) {
+    ], function (require, exports, module) {
     'use strict';
-    var Surface 				= require('famous/core/Surface');
-    var Modifier 				= require('famous/core/Modifier');
-    var Transform 				= require('famous/core/Transform');
-    var EventHandler 			= require('famous/core/EventHandler');
-    var OptionsManager 			= require('famous/core/OptionsManager');
-    var View 					= require('famous/core/View');
-    var ContainerSurface 		= require('famous/surfaces/ContainerSurface');
-    var Utility 				= require('famous/utilities/Utility');
+    var Surface                 = famous.core.Surface;
+    var Modifier                = famous.core.Modifier;
+    var Transform               = famous.core.Transform;
+    var EventHandler            = famous.core.EventHandler;
+    var OptionsManager          = famous.core.OptionsManager;
+    var View                    = famous.core.View;
+    var ContainerSurface        = famous.surfaces.ContainerSurface;
+    var Utility                 = famous.utilities.Utility;
     var Utils                   = require('famodev/Utils');
 
     function Slidershow(options) {
@@ -297,8 +289,8 @@ define('famodev/ui/Slidershow', [
         return [
             {
                 target: this.container.render()
-      		}
-    	];
+            }
+        ];
     };
     Slidershow.prototype.reset = function reset() {
         this.total = this.options.sliders.length;

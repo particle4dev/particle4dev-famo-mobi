@@ -9,11 +9,10 @@
 define('famodev/Lightbox', [
     'require', 
     'exports',
-    'module',
-    'famous/views/Lightbox'
+    'module'
     ], function(require, exports, module){
 
-        var LightboxView    = require('famous/views/Lightbox');
+        var LightboxView    = famous.views.Lightbox;
 
         function Lightbox () {
             LightboxView.apply(this, arguments);

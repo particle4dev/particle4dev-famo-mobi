@@ -1,17 +1,13 @@
 define('famodev/Utils',[
     'require', 
     'exports',
-    'module',
-    'famous/core/Transform',
-    'famous/math/Utilities',
-    'famous/core/Engine',
-    'famous/transitions/Transitionable'
+    'module'
     ], function(require, exports, module) {
 
-        var Transform               = require('famous/core/Transform');
-        var Utilities               = require('famous/math/Utilities');
-        var Engine                  = require('famous/core/Engine');
-        var Transitionable          = require('famous/transitions/Transitionable');
+        var Transform               = famous.core.Transform;
+        var Utilities               = famous.math.Utilities;
+        var Engine                  = famous.core.Engine;
+        var Transitionable          = famous.transitions.Transitionable;
 
         var innerHeight = new Transitionable(0), innerWidth = new Transitionable(0);
         var resize = function () {

@@ -9,14 +9,12 @@
 define('famodev/reactive/ReactiveCursor',[
     'require', 
     'exports',
-    'module',
-    'famous/core/EventHandler',
-    'famous/core/OptionsManager'
+    'module'
     ],
     function (require, exports, module) {
 
-        var EventHandler    = require('famous/core/EventHandler');
-        var OptionsManager  = require('famous/core/OptionsManager');
+        var EventHandler    = famous.core.EventHandler;
+        var OptionsManager  = famous.core.OptionsManager;
 
         function ReactiveCursor(options) {
             this.options = Object.create(ReactiveCursor.DEFAULT_OPTIONS);

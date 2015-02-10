@@ -1,3 +1,4 @@
+// FIXME: rewrite with new EventsCenter
 define('famodev/ui/ToastsCenter', [
     'require',
     'exports',

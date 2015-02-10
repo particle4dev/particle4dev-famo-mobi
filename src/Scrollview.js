@@ -10,16 +10,13 @@
 define('famodev/Scrollview',[
     'require', 
     'exports',
-    'module',
-    'famous/views/Scrollview',
-    'famous/core/Surface',
-    'famous/core/RenderNode'
+    'module'
     ],
     function (require, exports, module) {
 
-        var Scrollview              = require("famous/views/Scrollview");
-        var Surface                 = require("famous/core/Surface");
-        var RenderNode              = require("famous/core/RenderNode");
+        var Scrollview              = famous.views.Scrollview;
+        var Surface                 = famous.core.Surface;
+        var RenderNode              = famous.core.RenderNode;
 
         function Scrollview2 () {
             Scrollview.apply(this, arguments);

@@ -5,32 +5,22 @@
 define('famodev/Modals', [
     'require', 
     'exports',
-    'module',
-    'famous/core/View',
-    'famous/modifiers/StateModifier',
-    'famous/core/RenderNode',
-    'famous/core/Surface',
-    'famous/core/Transform',
-    'famous/surfaces/ContainerSurface',
-    'famous/transitions/Transitionable',
-    'famous/transitions/TransitionableTransform',
-    'famous/core/Modifier',
-    'famous/utilities/Utility',
-    'famous/views/RenderController'
+    'module'
     ], function(require, exports, module){
 
-        var View               = require('famous/core/View');
-        var StateModifier      = require('famous/modifiers/StateModifier');
-        var RenderNode         = require('famous/core/RenderNode');
-        var Surface            = require('famous/core/Surface');
-        var Transform          = require('famous/core/Transform');
+        var View               = famous.core.View;
+        var Modifier           = famous.core.Modifier;
+        var RenderNode         = famous.core.RenderNode;
+        var Surface            = famous.core.Surface;
+        var Transform          = famous.core.Transform;
 
-        var ContainerSurface        = require('famous/surfaces/ContainerSurface');
-        var Transitionable          = require('famous/transitions/Transitionable');
-        var TransitionableTransform = require('famous/transitions/TransitionableTransform');
-        var Modifier                = require('famous/core/Modifier');
-        var Utility                 = require('famous/utilities/Utility');
-        var RenderController        = require('famous/views/RenderController');
+        var StateModifier           = famous.modifiers.StateModifier;
+        var ContainerSurface        = famous.surfaces.ContainerSurface;
+        var Transitionable          = famous.transitions.Transitionable;
+        var TransitionableTransform = famous.transitions.TransitionableTransform;
+        
+        var Utility                 = famous.utilities.Utility;
+        var RenderController        = famous.views.RenderController;
 
         function Modal () {
             View.apply(this, arguments);

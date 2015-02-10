@@ -14,20 +14,15 @@ define('famodev/ui/Toast', [
     'require', 
     'exports',
     'module',
-    'famous/core/RenderNode',
-    'famous/core/Surface',
-    'famous/core/Transform',
-    'famous/core/Modifier',
-
     'famodev/Utils',
     'famodev/reactive/ReactiveSurface'
     ],
     function(require, exports, module) {
 
-        var RenderNode  = require('famous/core/RenderNode');
-        var Surface     = require('famous/core/Surface');
-        var Transform   = require('famous/core/Transform');
-        var Modifier    = require('famous/core/Modifier');
+        var RenderNode  = famous.core.RenderNode;
+        var Surface     = famous.core.Surface;
+        var Transform   = famous.core.Transform;
+        var Modifier    = famous.core.Modifier;
 
         var Utils       = require('famodev/Utils');
         var ReactiveSurface = require('famodev/reactive/ReactiveSurface');

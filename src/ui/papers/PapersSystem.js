@@ -3,26 +3,18 @@ define('famodev/ui/papers/PapersSystem', [
     'exports',
     'module',
 
-    'famodev/ui/papers/Paper',
-
-    'famous/core/View',
-    'famous/core/RenderNode',
-    'famous/core/Transform',
-    'famous/core/Modifier',
-    'famous/core/Engine',
-    'famous/core/ViewSequence'
+    'famodev/ui/papers/Paper'
     ],
     function (require, exports, module) {
 
     var Paper                       = require('famodev/ui/papers/Paper');
 
-    var View                        = require('famous/core/View');
-    var RenderNode                  = require('famous/core/RenderNode');
-    
-    var Transform                   = require('famous/core/Transform');
-    var Modifier                    = require('famous/core/Modifier');
-    var Engine                      = require('famous/core/Engine');
-    var ViewSequence                = require('famous/core/ViewSequence');
+    var View                        = famous.core.View;
+    var RenderNode                  = famous.core.RenderNode;
+    var Transform                   = famous.core.Transform;
+    var Modifier                    = famous.core.Modifier;
+    var Engine                      = famous.core.Engine;
+    var ViewSequence                = famous.core.ViewSequence;
 
     function PapersSystem() {
         this._renderablesStore = new Register();

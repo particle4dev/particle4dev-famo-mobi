@@ -9,19 +9,14 @@
 define('famodev/app/PagesManager', [
     'require', 
     'exports',
-    'module',
-    'famous/views/Lightbox',
-    'famous/core/Transform',
-    'famous/transitions/Transitionable',
-    'famous/transitions/SpringTransition',
-    'famous/transitions/Easing'
+    'module'
     ], function (require, exports, module) {
 
-        var Lightbox            = require('famous/views/Lightbox');
-        var Transform           = require('famous/core/Transform');
-        var Transitionable      = require('famous/transitions/Transitionable');
-        var SpringTransition    = require('famous/transitions/SpringTransition');
-        var Easing              = require('famous/transitions/Easing');
+        var Transform           = famous.core.Transform;
+        var Lightbox            = famous.views.Lightbox;
+        var Transitionable      = famous.transitions.Transitionable;
+        var SpringTransition    = famous.transitions.SpringTransition;
+        var Easing              = famous.transitions.Easing;
 
         Transitionable.registerMethod('spring', SpringTransition);
         /**
