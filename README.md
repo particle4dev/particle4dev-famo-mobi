@@ -1,12 +1,9 @@
-releases 0.6.0
+releases 0.6.1
 
-v0.6.1
+v0.6.2
 - viet lai RippleEffect (draft - 1)
   chuyen sang dang ke thua
 - viet lai ui/button su dung RippleEffect
-
-v0.6.2
-- Viet router
 
 Draft
 v0.7.0
