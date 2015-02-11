@@ -47,27 +47,30 @@ define('famodev/ui/ToastsCenter', [
                 }
             }, time);
         };
-        EventsCenter.listen('show#message', function (message, time) {
-            var duration = Toast.UNIDENTIFIED;
-            if(time)
-                duration = time;
-            requireDisplay();
-            currentToast.setText(message);
-            hideToast(duration);
-        });
-        EventsCenter.listen('hide#message', function (message, time) {
-            requireDisplay();
-            if(_.isNumber(message))
-                time = message;
-            if(_.isString(message)) {
+        EventsCenter.listen('message#*', function (message, time) {
+            if(this.getType() == 'show') {
+                var duration = Toast.UNIDENTIFIED;
+                if(time)
+                    duration = time;
+                requireDisplay();
                 currentToast.setText(message);
-                if(!_.isNumber(message))
-                    time = 3000;
+                hideToast(duration);
             }
-            if(!time)
-                time = 0;
-            hideToast(time);
+            else if(this.getType() == 'hide') {
+                requireDisplay();
+                if(_.isNumber(message))
+                    time = message;
+                if(_.isString(message)) {
+                    currentToast.setText(message);
+                    if(!_.isNumber(message))
+                        time = 3000;
+                }
+                if(!time)
+                    time = 0;
+                hideToast(time);
+            }
         });
+
         module.exports = {
             display: function (container) {
                 Toast.init(container, zIndex6_toast); 
