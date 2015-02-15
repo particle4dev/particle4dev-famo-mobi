@@ -1,7 +1,7 @@
 releases 0.7.0
 
-v0.7.0
- - cap nhat famous ban moi nhat
+v0.7.1
+ - sua loi page manager (add renderable & default page)
 
 v0.8.0
 - viet lai RippleEffect (draft - 1)

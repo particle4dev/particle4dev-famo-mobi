@@ -6,6 +6,24 @@
  * @extends {famous/core/Surface}
  * @status v0.3.0
  */
+// https://github.com/Famous/famous/blob/master/src/core/ElementOutput.js
+// https://github.com/Famous/famous/blob/master/src/core/Surface.js
+
+// add
+// new Surface => ElementOutput.call(this); => if (element) this.attach(element); //(ElementOutput)
+// => _addEventListeners.call(this, target);
+// target.addEventListener(i, this.eventForwarder);
+
+// add
+// Surface.prototype.commit
+//      if (!this._currentTarget) this.setup(context.allocator);
+// Surface.prototype.setup
+// this.attach(target);
+
+// remove
+// Surface.prototype.cleanup
+// this.detach(target);
+
 define('famodev/reactive/ReactiveTemplate',[
     'require', 
     'exports',
@@ -86,12 +104,12 @@ define('famodev/reactive/ReactiveTemplate',[
             },
             /**
              * Remove the UI component from the DOM via jQuery, Blaze will cleanup.
-             *
+             * It is ran in cleanup method
              * @private
              * @method recall
              */
             recall: function recall(target) {
-                $(target).empty();
+
             }
         });
 
