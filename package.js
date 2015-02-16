@@ -1,6 +1,6 @@
 Package.describe({
     summary: "open source front-end framework for developing mobile apps with famous and meteor",
-    version: "0.7.0",
+    version: "0.7.1",
     name: "particle4dev:famo-mobi",
     git: "https://particle4dev@bitbucket.org/particle4devs-team/famo-mobi.git"
 });
@@ -20,7 +20,7 @@ Package.on_use(function(api) {
 
     api.use(['particle4dev:sass@1.2.0'], both);
     api.imply(['particle4dev:sass@1.2.0'], both);
-    api.use(['iron:router'], client, {weak: true});
+    api.use(['iron:router@1.0.7'], client, {weak: true});
 
     api.add_files([
         'stylesheets/main.scss',

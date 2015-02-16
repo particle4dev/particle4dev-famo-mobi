@@ -1,3 +1,10 @@
+
+var isRenderable = function (obj) {
+    if(obj && obj.render)
+        return true;
+    return false;
+};
+
 /**
  * PagesManager
  *      
@@ -26,18 +33,43 @@ define('famodev/app/PagesManager', [
             var PagesLine       = new Pipeline();
             var pages = {},
             defaultPage = null,
-            currentpage = null;
+            currentpage = null,
+            autoShow = true,
+            isShow = false;
             if(!opt)
                 opt = PagesManager.SlideHideLeft;
             var lightbox = new Lightbox(opt);
 
-            // add method
+            /**
+             * Methods
+             */
+            var _requireShow = function () {
+                if(!autoShow || isShow)
+                    return;
+                this.show();
+                isShow = true;
+            }.bind(this);
+
             this['getInstance'] = function(){
                 return lightbox;
             };
+            // PagesManager.register('views/LeadsListingsInterestedView');
+            // or
+            // PagesManager.register('page1', renderable);
             this['register'] = function (path, options) {
+                if(_.isString(path) && isRenderable(options)) {
+                    pages[path] = options;
+                    if(!defaultPage)
+                        this['defaultPage'](path);
+                    _requireShow();
+                    return ;
+                }
                 var pageModule = require(path);
                 pages[path] = new pageModule(options);
+                if(!defaultPage)
+                    this['defaultPage'](path);
+                _requireShow();
+                return ;
             };
             this['getPage'] = function (path) {
                 return pages[path];
@@ -229,3 +261,28 @@ define('famodev/app/PagesManager', [
 
         return module.exports = PagesManager;
 });
+
+/**
+ * Tests
+ */
+// require([
+//     'famodev/app/PagesManager'
+//     ], function (PagesManager) {
+//         var Engine      = famous.core.Engine;
+        
+//         var context     = Engine.createContext();
+//         var p = new PagesManager();
+//         p.register('page1', new famous.core.Surface({
+//             size: [undefined, undefined],
+//             properties: {
+//                 backgroundColor: 'blue'
+//             }
+//         }));
+//         p.register('page2', new famous.core.Surface({
+//             size: [undefined, undefined],
+//             properties: {
+//                 backgroundColor: 'green'
+//             }
+//         }));
+//         context.add(p.getInstance());
+// });
