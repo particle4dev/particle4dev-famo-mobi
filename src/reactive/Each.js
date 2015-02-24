@@ -413,3 +413,18 @@ define('famodev/reactive/Each',[
 //         mainContext.add(scrollview);
 //     });
 // });
+
+/**
+ 
+    var each = new Each({
+        insertSpec: {
+            // render-spec used when inserting renderables
+            transform: Transform.translate(-window.innerWidth + 20, 0, 0)
+        },
+        removeSpec: {
+            // render-spec used when removing renderables
+            transform: Transform.translate(window.innerWidth, 0, 0)
+        }
+    });
+
+ */

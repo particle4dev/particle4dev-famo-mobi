@@ -1,5 +1,5 @@
 /**
- * Scrollview2
+ * Scrollview
  *
  * {{ Missing param }}
  *
@@ -7,7 +7,7 @@
  * @extends {famous/views/Scrollview}
  * @status stable
  */
-define('famodev/Scrollview',[
+define('famodev/core/Scrollview',[
     'require', 
     'exports',
     'module'
@@ -18,21 +18,21 @@ define('famodev/Scrollview',[
         var Surface                 = famous.core.Surface;
         var RenderNode              = famous.core.RenderNode;
 
-        function Scrollview2 () {
+        function Scrollview () {
             Scrollview.apply(this, arguments);
 
             this._scroller.group.elementClass = ["famous-group", "list"];
 
             _attachEvents.call(this);
         }
-        Scrollview2.prototype = Object.create(Scrollview.prototype);
-        Scrollview2.prototype.constructor = Scrollview2;
-        Scrollview2.DEFAULT_OPTIONS = Scrollview.DEFAULT_OPTIONS;
+        Scrollview.prototype = Object.create(Scrollview.prototype);
+        Scrollview.prototype.constructor = Scrollview;
+        Scrollview.DEFAULT_OPTIONS = Scrollview.DEFAULT_OPTIONS;
 
         // direction move
-        Scrollview2.UP      = 1;
-        Scrollview2.FREEZE  = 0;
-        Scrollview2.DOWN    = -1;
+        Scrollview.UP      = 1;
+        Scrollview.FREEZE  = 0;
+        Scrollview.DOWN    = -1;
         // add view
 
         // events
@@ -40,8 +40,8 @@ define('famodev/Scrollview',[
             // on edge event
             this._isTop = false;
             this._isBottom = false;
-            this._scroller.on('edgeHit', function(data) {
-                this._eventOutput.emit('edgeHit', data);
+            this._scroller.on('onEdge', function(data) {
+                this._eventOutput.emit('onEdge', data);
                 if(data.position === 0){
                     if(!this._isTop)
                         this._eventOutput.emit('onTop', data);
@@ -76,17 +76,17 @@ define('famodev/Scrollview',[
                 }
 
                 if(event.velocity > 0)
-                    this._directionMove = Scrollview2.UP;
+                    this._directionMove = Scrollview.UP;
                 if(event.velocity < 0)
-                    this._directionMove = Scrollview2.DOWN;
+                    this._directionMove = Scrollview.DOWN;
 
                 this._eventOutput.emit('moveScroll', event);
             });
             this._eventInput.on('end', function(event){
-                this._directionMove = Scrollview2.FREEZE;
+                this._directionMove = Scrollview.FREEZE;
                 this._eventOutput.emit('endScroll', event);
             });
-            this._directionMove = Scrollview2.FREEZE;
+            this._directionMove = Scrollview.FREEZE;
             this.getDirection = function (){
                 return this._directionMove;
             };
@@ -98,5 +98,16 @@ define('famodev/Scrollview',[
             };
         }
 
-        module.exports = Scrollview2;
+        module.exports = Scrollview;
+    });
+
+define('famodev/Scrollview',[
+    'require', 
+    'exports',
+    'module',
+    'famodev/core/Scrollview'
+    ],
+    function (require, exports, module) {
+        var Scrollview  = require('famodev/core/Scrollview');
+        module.exports = Scrollview;
     });
