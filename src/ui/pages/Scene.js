@@ -33,24 +33,59 @@ define('famodev/ui/pages/Scene', [
         this.__activeEvents = [];
 
         // support rendered
-        if(_.isFunction(this.rendered))
-            this.rendered();
+        var optionsScene = this.getOptions();
+        if(!optionsScene.inTransform)
+            this.setOptions({
+                inTransform: Transitions.fadeIn
+            });
+        if(!optionsScene.outTransform)
+            this.setOptions({
+                outTransform: Transitions.fadeOut
+            });
     }
 
     Scene.prototype = Object.create( SizeAwareView.prototype );
     Scene.prototype.constructor = Scene;
-    Scene.DEFAULT_OPTIONS = {
-        inTransform: Transitions.fadeLeft,
-        outTransform: Transitions.fadeRight
-    };
 
     /**
      * Activate method to be overwritten.
      * @method activate
      */
-    Scene.prototype.activate = function activate() {
-        console.log(this);
+    Scene.prototype.activate = function activate(callback) {
+        var optionsScene = this.getOptions();
+        optionsScene.inTransform.apply(this, [function () {
+            if (callback) callback();
+            if(_.isFunction(this.rendered))
+                this.rendered();
+        }.bind(this)]);
     };
+
+    /**
+     * 
+     * @method getActiveModifier
+     */
+    Scene.prototype.getActiveModifier = function getActiveModifier() {
+        var parent = this.getParent();
+        return parent.getActiveModifier();
+    };
+
+    /**
+     * 
+     * @method getParent
+     */
+    Scene.prototype.getParent = function getParent() {
+        return this.__parent;
+    };
+
+    /**
+     * 
+     * @method setParent
+     */
+    Scene.prototype.setParent = function setParent(parent) {
+        this.__parent = parent;
+        return this;
+    };
+
 
     /**
      * Deactivate method. Meant to be overwritten by the children.
@@ -71,9 +106,11 @@ define('famodev/ui/pages/Scene', [
      * @method activate
      */
     Scene.prototype.deactivate = function deactivate( callback ) {
-        if (callback) callback();
-        console.log(this.destroy);
-        this.destroy();
+        var optionsScene = this.getOptions();
+        optionsScene.outTransform.apply(this, [function () {
+            if (callback) callback();
+            this.destroy();
+        }.bind(this)]);
     };
 
     /*

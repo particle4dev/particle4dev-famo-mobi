@@ -22,6 +22,28 @@ define('famodev/ui/pages/SceneController', [
     SceneController.prototype.constructor = SceneController;
 
     /*
+     *  Set a transform on the active modifier ( the modifier that is above the current scene )
+     *  @method setActiveModifier
+     *  @param transform {Transform} Transform to set to.
+     *  @param transition {Object} Transiition definition
+     *  @param callback {Function} callback to execute when animation is finished.
+     */
+    SceneController.prototype.setActiveModifier = function ( transform, transition, callback ) {
+        if (this.activeModifier) {
+            this.activeModifier.halt();
+            this.activeModifier.setTransform( transform, transition, callback );
+        }
+    };
+
+    /*
+     *  @method getActiveModifier
+     *  @returns {Modifier} modifier above the main scene
+     */
+    SceneController.prototype.getActiveModifier = function () {
+        return this.activeModifier;
+    };
+
+    /*
      *  @method addScene 
      *  @param key {String} key to trigger viewing of View.
      *  @param view {View|Scene} scene to view on key.
@@ -66,7 +88,10 @@ define('famodev/ui/pages/SceneController', [
             key: key,
             data: data
         });
-
+        if(this.activeScene) {
+            var optionsScene = this.activeScene.getOptions();
+            optionsScene.outTransform.apply(this);
+        }
         if ( this.activeScene && this.activeScene.deactivate ) {
             this.activeScene.deactivate(_resetAndGetOptions.bind(this, data));
         } 
@@ -81,7 +106,6 @@ define('famodev/ui/pages/SceneController', [
      *  @param data {object} data passed from key.data (setScene)
      */
     function _resetAndGetOptions ( data ) {
-        console.log(data, 'asdasd');
         this.reset();
         this._eventOutput.emit('deactivate');
         if (data) _createAndAddScene.call(this, data);
@@ -96,7 +120,9 @@ define('famodev/ui/pages/SceneController', [
      */
     function _createAndAddScene(data) {
         this.activeScene    = new this.ActiveConstructor(data);
+        this.activeScene.setParent(this);
         this.activeModifier = new StateModifier();
+
 
         var node = new RenderNode();
         node.add( this.activeModifier ).add( this.activeScene );

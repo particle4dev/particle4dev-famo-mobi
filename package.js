@@ -76,7 +76,7 @@ Package.on_use(function(api) {
         'src/ui/pages/Scene.js',
         'src/ui/pages/SceneController.js',
         'src/ui/pages/Transitions.js',
-
+        'src/ui/pages/test.js',
         // 'src/ui/PagesManager.js', // [DEPRECATED] draft v0.4.0
 
 

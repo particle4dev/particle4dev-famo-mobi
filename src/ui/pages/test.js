@@ -1,14 +1,13 @@
-
 /**
  * TESTS
- * 
  */
-define('famodev/ui/pages/tests/Page1', [
+define('famodev/ui/pages/tests/Page', [
     'require',
     'exports',
     'module',
 
     'famodev/ui/pages/Scene',
+    'famodev/ui/pages/Transitions'
     ], function (require, exports, module) {
 
         var Surface             = famous.core.Surface;
@@ -16,24 +15,36 @@ define('famodev/ui/pages/tests/Page1', [
         var Transform           = famous.core.Transform;
         var StateModifier       = famous.modifiers.StateModifier;
         var Scene               = require('famodev/ui/pages/Scene');
+        var Transitions         = require('famodev/ui/pages/Transitions');
 
-        function Page1() {
+        function Page() {
             Scene.apply(this, arguments);
 
+            this.colors = [
+            'red',
+            'yellow',
+            'blue',
+            'green'
+            ];
             _createBackground.call(this);
             _createLayout.call(this);
         }
-        Page1.prototype = Object.create(Scene.prototype);
-        Page1.prototype.constructor = Page1;
+        Page.prototype = Object.create(Scene.prototype);
+        Page.prototype.constructor = Page;
+        Page.DEFAULT_OPTIONS = {
+            inTransform: Transitions.fadeIn,
+            outTransform: Transitions.fadeOut
+        };
 
         /**
          * Add views
          */
         function _createBackground(){
+            var self = this;
             this._bg = new Surface({
                 size: [undefined, undefined],
                 properties: {
-                    'background': 'red'
+                    'background': self.getColor()
                 }
             });
             this
@@ -44,6 +55,7 @@ define('famodev/ui/pages/tests/Page1', [
         }
 
         function _createLayout() {
+            var self = this;
             var HeaderFooterLayout = ijzerenhein.layout.HeaderFooterLayout;
 
             var layout = new ijzerenhein.LayoutController({
@@ -56,15 +68,15 @@ define('famodev/ui/pages/tests/Page1', [
                     header: new Surface({
                         content: 'This is the header surface',
                         properties: {
-                            'background': 'blue',
+                            'background': self.getColor(),
                             'color': '#fff',
                             'text-align': 'center'
                         }
                     }),
                     content: new Surface({
-                        content: 'This is the content surface',
+                        content: 'This is ' + self.getOptions().content,
                         properties: {
-                            'background': 'green',
+                            'background': self.getColor(),
                             'color': '#fff',
                             'text-align': 'center'
                         }
@@ -72,7 +84,7 @@ define('famodev/ui/pages/tests/Page1', [
                     footer: new Surface({
                         content: 'This is the footer surface',
                         properties: {
-                            'background': 'yellow',
+                            'background': self.getColor(),
                             'color': '#fff',
                             'text-align': 'center'
                         }
@@ -89,12 +101,16 @@ define('famodev/ui/pages/tests/Page1', [
         /**
          * Methods
          */
-        _.extend(Page1.prototype, {
+        _.extend(Page.prototype, {
             destroyed: function () {
-                console.log('Page1 destroyed');
+                console.log('Page destroyed' + this.getOptions().content);
             },
             rendered: function () {
-                console.log('Page1 rendered');
+                console.log('Page rendered' + this.getOptions().content);
+            },
+            getColor: function () {
+                var i = _.random(0, this.colors.length -1);
+                return this.colors[i];
             }
         });
 
@@ -103,112 +119,8 @@ define('famodev/ui/pages/tests/Page1', [
          */
 
 
-        module.exports = Page1;
+        module.exports = Page;
 });
-
-define('famodev/ui/pages/tests/Page2', [
-    'require',
-    'exports',
-    'module',
-
-    'famodev/ui/pages/Scene',
-    ], function (require, exports, module) {
-
-        var Surface             = famous.core.Surface;
-        var Modifier            = famous.core.Modifier;
-        var Transform           = famous.core.Transform;
-        var StateModifier       = famous.modifiers.StateModifier;
-        var Scene               = require('famodev/ui/pages/Scene');
-
-        function Page2() {
-            Scene.apply(this, arguments);
-
-            _createBackground.call(this);
-            _createLayout.call(this);
-        }
-        Page2.prototype = Object.create(Scene.prototype);
-        Page2.prototype.constructor = Page2;
-
-        /**
-         * Add views
-         */
-        function _createBackground(){
-            this._bg = new Surface({
-                size: [undefined, undefined],
-                properties: {
-                    'background': 'blue'
-                }
-            });
-            this
-            .add(new StateModifier({
-                transform: Transform.translate(0, 0, -1)
-            }))
-            .add(this._bg);
-        }
-
-        function _createLayout() {
-            var HeaderFooterLayout = ijzerenhein.layout.HeaderFooterLayout;
-
-            var layout = new ijzerenhein.LayoutController({
-                layout: HeaderFooterLayout,
-                layoutOptions: {
-                    headerSize: 60,    // header has height of 60 pixels
-                    footerSize: 20     // footer has height of 20 pixels
-                },
-                dataSource: {
-                    header: new Surface({
-                        content: 'This is the header surface',
-                        properties: {
-                            'background': 'red',
-                            'color': '#fff',
-                            'text-align': 'center'
-                        }
-                    }),
-                    content: new Surface({
-                        content: 'This is the content surface',
-                        properties: {
-                            'background': 'yellow',
-                            'color': '#fff',
-                            'text-align': 'center'
-                        }
-                    }),
-                    footer: new Surface({
-                        content: 'This is the footer surface',
-                        properties: {
-                            'background': 'green',
-                            'color': '#fff',
-                            'text-align': 'center'
-                        }
-                    })
-                }
-            });
-            this
-            .add(new StateModifier({
-                transform: Transform.translate(0, 0, 0)
-            }))
-            .add(layout);
-        }
-
-        /**
-         * Methods
-         */
-        _.extend(Page2.prototype, {
-            destroyed: function () {
-                console.log('Page2 destroyed');
-            },
-            rendered: function () {
-                console.log('Page2 rendered');
-            }
-        });
-
-        /**
-         * Events
-         */
-
-
-        module.exports = Page2;
-});
-
 
 Meteor.startup(function () {
     require([
@@ -217,8 +129,7 @@ Meteor.startup(function () {
         'module',
 
         'famodev/ui/pages/SceneController',
-        'famodev/ui/pages/tests/Page1',
-        'famodev/ui/pages/tests/Page2'
+        'famodev/ui/pages/tests/Page'
 
         ], function (require, exports, module) {
         var Engine              = famous.core.Engine;
@@ -227,8 +138,7 @@ Meteor.startup(function () {
         var StateModifier       = famous.modifiers.StateModifier;
 
         var SceneController     = require('famodev/ui/pages/SceneController');
-        var Page1               = require('famodev/ui/pages/tests/Page1');
-        var Page2               = require('famodev/ui/pages/tests/Page2');
+        var Page               = require('famodev/ui/pages/tests/Page');
 
         var mainContext = Engine.createContext();
 
@@ -238,16 +148,21 @@ Meteor.startup(function () {
         });
 
         var sc = new SceneController();
-        sc.addScene('p1', Page1);
-        sc.addScene('p2', Page2);
+        var numberOfPage = 100;
+        for (var i = 1; i < numberOfPage; i++) {
+            sc.addScene('p' + i, Page);
+        };
         sc.setScene('p1', {
             content: 'hi'
         });
-        Meteor.setTimeout(function () {
-            sc.setScene('p2', {
-                content: 'hi'
+        var ip = 1;
+        window.switchPage = function () {
+            var p = ip % numberOfPage;
+            sc.setScene('p' + p, {
+                content: 'page ' + p
             });
-        }, 5000);
+            ip++;
+        };
         mainContext.add(modifier).add(sc);        
     });
 });
