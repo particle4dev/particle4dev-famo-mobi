@@ -23,6 +23,7 @@ Package.on_use(function(api) {
     api.use(['iron:router@1.0.7'], client, {weak: true});
 
     api.add_files([
+        /**
         'stylesheets/fonts/ionicons.eot',
         'stylesheets/fonts/ionicons.svg',
         'stylesheets/fonts/ionicons.ttf',
@@ -30,6 +31,7 @@ Package.on_use(function(api) {
 
         'stylesheets/css/ionic.css',
         'stylesheets/css/famous-reset.scss',
+        */
 
         // utils
         'src/utils/helpers.js',
@@ -69,6 +71,11 @@ Package.on_use(function(api) {
         'src/ui/papers/Paper.js', // upgraded
         'src/ui/papers/PapersSystem.js', // upgraded
 
+
+        // 
+        'src/ui/pages/Scene.js',
+        'src/ui/pages/SceneController.js',
+        'src/ui/pages/Transitions.js',
 
         // 'src/ui/PagesManager.js', // [DEPRECATED] draft v0.4.0
 

@@ -118,10 +118,12 @@ define('famodev/ui/papers/Paper', [
             var _cb = callback ? Utility.after(3, function(){
                 callback();
                 // call destroyed
+                self.destroy();// remove dom
                 if(self._renderable && self._renderable.destroyed)
                     self._renderable.destroyed();
             }) : Utility.after(3, function(){
                 // call destroyed
+                self.destroy();// remove dom
                 if(self._renderable && self._renderable.destroyed)
                     self._renderable.destroyed();
             });
@@ -180,6 +182,17 @@ define('famodev/ui/papers/Paper', [
          */
         render: function () {
             return this._node.render();
+        },
+
+        /**
+         *  Unregister the entity, destroying the scene. WARNING, rendering will stop after you call this method.
+         *  As this is called in deactivate, wait until the next frame to allow the last commit to occur before
+         *  unregestering.
+         *  @method destroy
+         */
+        destroy: function destroy() {
+            console.log('remove dom FIXXXMMMMMMMMMEEEEEEEEEEEEE', this.id);
+            // Engine.nextTick( Entity.unregister.bind({}, this.id ));
         }
     });
 

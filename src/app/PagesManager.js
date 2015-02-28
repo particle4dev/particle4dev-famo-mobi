@@ -86,16 +86,22 @@ define('famodev/app/PagesManager', [
                     if(currentpage == path)
                         return;
                     // call destroyed
-                    var p = pages[currentpage];
-                    if(p && p.destroyed)
-                        p.destroyed();
+                    var p1 = pages[currentpage];
+                    if(p1 && p1.destroyed)
+                        p1.destroyed();
 
-                    p = pages[path];
+                    var p2 = pages[path];
                     // call rendered
-                    if(p && p.rendered)
-                        p.rendered();
-
-                    lightbox.show(p);
+                    if(p2 && p2.rendered)
+                        p2.rendered();
+                    if(p1)
+                        lightbox.hide(function () {
+                            if(p1 && p1.destroyDom)
+                                p1.destroyDom();
+                            lightbox.show(p2);
+                        });
+                    else
+                        lightbox.show(p2);
                     currentpage = path;
                 }, path);
                 PagesLine.sequenceFlush({

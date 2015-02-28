@@ -1,8 +1,6 @@
 /**
  * Scrollview
  *
- * {{ Missing param }}
- *
  * @constructor
  * @extends {famous/views/Scrollview}
  * @status stable
@@ -14,20 +12,20 @@ define('famodev/core/Scrollview',[
     ],
     function (require, exports, module) {
 
-        var Scrollview              = famous.views.Scrollview;
+        var ScrollviewOrigin        = famous.views.Scrollview;
         var Surface                 = famous.core.Surface;
         var RenderNode              = famous.core.RenderNode;
 
         function Scrollview () {
-            Scrollview.apply(this, arguments);
+            ScrollviewOrigin.apply(this, arguments);
 
             this._scroller.group.elementClass = ["famous-group", "list"];
 
             _attachEvents.call(this);
         }
-        Scrollview.prototype = Object.create(Scrollview.prototype);
+        Scrollview.prototype = Object.create(ScrollviewOrigin.prototype);
         Scrollview.prototype.constructor = Scrollview;
-        Scrollview.DEFAULT_OPTIONS = Scrollview.DEFAULT_OPTIONS;
+        Scrollview.DEFAULT_OPTIONS = ScrollviewOrigin.DEFAULT_OPTIONS;
 
         // direction move
         Scrollview.UP      = 1;
