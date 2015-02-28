@@ -14,6 +14,7 @@ define('famodev/ui/pages/tests/Page', [
         var Modifier            = famous.core.Modifier;
         var Transform           = famous.core.Transform;
         var StateModifier       = famous.modifiers.StateModifier;
+
         var Scene               = require('famodev/ui/pages/Scene');
         var Transitions         = require('famodev/ui/pages/Transitions');
 
@@ -27,13 +28,14 @@ define('famodev/ui/pages/tests/Page', [
             'green'
             ];
             _createBackground.call(this);
+            _createScrollview.call(this);
             _createLayout.call(this);
         }
         Page.prototype = Object.create(Scene.prototype);
         Page.prototype.constructor = Page;
         Page.DEFAULT_OPTIONS = {
-            inTransform: Transitions.fadeIn,
-            outTransform: Transitions.fadeOut
+            inTransform: Transitions.in.slideUp,
+            outTransform: Transitions.out.slideDown
         };
 
         /**
@@ -54,6 +56,35 @@ define('famodev/ui/pages/tests/Page', [
             .add(this._bg);
         }
 
+        function _createScrollview () {
+            this._scrollview = new ijzerenhein.FlexScrollView({
+                useContainer: true,
+                container: { // options passed to the ContainerSurface
+                    properties: {
+                        overflow: 'hidden'
+                    }
+                }
+            });
+
+            var surfaces = [];
+
+            this._scrollview.sequenceFrom(surfaces);
+
+            for (var i = 0, temp; i < 40; i++) {
+                temp = new Surface({
+                     content: "Surface: " + (i + 1),
+                     size: [undefined, 200],
+                     properties: {
+                         backgroundColor: "hsl(" + (i * 360 / 40) + ", 100%, 50%)",
+                         lineHeight: "200px",
+                         textAlign: "center"
+                     }
+                });
+
+                surfaces.push(temp);
+            }
+        }
+
         function _createLayout() {
             var self = this;
             var HeaderFooterLayout = ijzerenhein.layout.HeaderFooterLayout;
@@ -61,8 +92,8 @@ define('famodev/ui/pages/tests/Page', [
             var layout = new ijzerenhein.LayoutController({
                 layout: HeaderFooterLayout,
                 layoutOptions: {
-                    headerSize: 60,    // header has height of 60 pixels
-                    footerSize: 20     // footer has height of 20 pixels
+                    headerSize: 44,    // header has height of 60 pixels
+                    footerSize: 44     // footer has height of 20 pixels
                 },
                 dataSource: {
                     header: new Surface({
@@ -70,23 +101,18 @@ define('famodev/ui/pages/tests/Page', [
                         properties: {
                             'background': self.getColor(),
                             'color': '#fff',
-                            'text-align': 'center'
+                            'text-align': 'center',
+                            'lineHeight': '44px'
                         }
                     }),
-                    content: new Surface({
-                        content: 'This is ' + self.getOptions().content,
-                        properties: {
-                            'background': self.getColor(),
-                            'color': '#fff',
-                            'text-align': 'center'
-                        }
-                    }),
+                    content: self._scrollview,
                     footer: new Surface({
                         content: 'This is the footer surface',
                         properties: {
                             'background': self.getColor(),
                             'color': '#fff',
-                            'text-align': 'center'
+                            'text-align': 'center',
+                            'lineHeight': '44px'
                         }
                     })
                 }

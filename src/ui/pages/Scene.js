@@ -36,11 +36,11 @@ define('famodev/ui/pages/Scene', [
         var optionsScene = this.getOptions();
         if(!optionsScene.inTransform)
             this.setOptions({
-                inTransform: Transitions.fadeIn
+                inTransform: Transitions.in.fadeIn
             });
         if(!optionsScene.outTransform)
             this.setOptions({
-                outTransform: Transitions.fadeOut
+                outTransform: Transitions.out.fadeRight
             });
     }
 

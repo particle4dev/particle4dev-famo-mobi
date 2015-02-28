@@ -132,6 +132,9 @@ define('famodev/app/PagesManager', [
                     curve: Easing.easeOut
                 }
             },
+
+
+            // done (fadeIn)
             OpacityIn: {
                 inOpacity: 0,
                 outOpacity: 0,
@@ -146,6 +149,9 @@ define('famodev/app/PagesManager', [
                     curve: Easing.easeOut
                 }
             },
+
+
+
             Identity: {
                 inOpacity: 1,
                 outOpacity: 1,
@@ -177,6 +183,8 @@ define('famodev/app/PagesManager', [
                 },
                 overlap: true
             },
+
+            // done (slideUp)
             SlideUp: {
                 inOpacity: 0,
                 outOpacity: 0,
@@ -194,6 +202,7 @@ define('famodev/app/PagesManager', [
                 },
                 overlap: true
             },
+
             SlideLeft: {
                 inOpacity: 1,
                 outOpacity: 1,
