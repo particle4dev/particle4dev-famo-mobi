@@ -35,7 +35,8 @@ define('famodev/app/PagesManager', [
             defaultPage = null,
             currentpage = null,
             autoShow = true,
-            isShow = false;
+            isShow = false,
+            currentPageObject = null;
             if(!opt)
                 opt = PagesManager.SlideHideLeft;
             var lightbox = new Lightbox(opt);
@@ -65,7 +66,7 @@ define('famodev/app/PagesManager', [
                     return ;
                 }
                 var pageModule = require(path);
-                pages[path] = new pageModule(options);
+                pages[path] = pageModule;
                 if(!defaultPage)
                     this['defaultPage'](path);
                 _requireShow();
@@ -86,11 +87,12 @@ define('famodev/app/PagesManager', [
                     if(currentpage == path)
                         return;
                     // call destroyed
-                    var p1 = pages[currentpage];
+                    var p1 = currentPageObject;
                     if(p1 && p1.destroyed)
                         p1.destroyed();
 
-                    var p2 = pages[path];
+                    var p2 = new pages[path]();
+                    currentPageObject = p2;
                     // call rendered
                     if(p2 && p2.rendered)
                         p2.rendered();

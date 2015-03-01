@@ -14,6 +14,7 @@ define('famodev/ui/pages/tests/Page', [
         var Modifier            = famous.core.Modifier;
         var Transform           = famous.core.Transform;
         var StateModifier       = famous.modifiers.StateModifier;
+        var Easing              = famous.transitions.Easing;
 
         var Scene               = require('famodev/ui/pages/Scene');
         var Transitions         = require('famodev/ui/pages/Transitions');
@@ -71,6 +72,8 @@ define('famodev/ui/pages/tests/Page', [
             this._scrollview.sequenceFrom(surfaces);
 
             for (var i = 0, temp; i < 40; i++) {
+                var node = new famous.core.RenderNode();
+                var mod  = new famous.core.Modifier();
                 temp = new Surface({
                      content: "Surface: " + (i + 1),
                      size: [undefined, 200],
@@ -80,8 +83,19 @@ define('famodev/ui/pages/tests/Page', [
                          textAlign: "center"
                      }
                 });
-
-                surfaces.push(temp);
+                temp.on('click', (function () {
+                    return function () {
+                        console.log('hello');
+                        mod.setTransform(Transform.rotateX(Math.PI / 3), {
+                            duration: 700,
+                            curve: Easing.easeOutBounce
+                        });
+                    };
+                })());
+                node
+                .add(mod)
+                .add(temp);
+                surfaces.push(node);
             }
         }
 
