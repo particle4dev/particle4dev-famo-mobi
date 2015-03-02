@@ -158,7 +158,6 @@ define('famodev/ui/pages/SceneController', [
      *  @param defaultOptions {Object} default options
      */
     function _createAndAddScene(data) {
-        console.log('_createAndAddScene', data);
         this.activeScene    = new this.ActiveConstructor(data);
         this.activeScene.setParent(this);
         this.activeModifier = new StateModifier();
