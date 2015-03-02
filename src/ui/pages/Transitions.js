@@ -27,7 +27,7 @@ define('famodev/ui/pages/Transitions', [
                 var modifier = this.getActiveModifier();
                 curve = curve ? curve : {
                     curve       : Easing.outExpoNorm,
-                    duration    : 750
+                    duration    : 500
                 };
 
                 modifier.halt();
@@ -122,7 +122,7 @@ define('famodev/ui/pages/Transitions', [
                 var modifier = this.getActiveModifier();
                 curve = curve ? curve : {
                     curve       : Easing.inExpoNorm,
-                    duration    : 1000
+                    duration    : 350
                 };
 
                 modifier.halt();

@@ -1,9 +1,56 @@
-
 var isRenderable = function (obj) {
     if(obj && obj.render)
         return true;
     return false;
 };
+
+define('famodev/app/PagesManager', [
+    'require', 
+    'exports',
+    'module',
+
+    'famodev/ui/pages/SceneController',
+    ], function (require, exports, module) {
+
+        var SceneController         = require('famodev/ui/pages/SceneController'); 
+
+        function PagesManager () {
+            SceneController.apply(this, arguments);
+
+        }
+        PagesManager.prototype = Object.create(SceneController.prototype);
+        PagesManager.prototype.constructor = PagesManager;
+
+        /**
+         * Methods
+         */
+        _.extend(PagesManager.prototype, {
+            getInstance: function(){
+                return this;
+            },
+            register: function (path) {
+                var pageModule = require(path);
+                return this.addScene(path, pageModule);
+            },
+            show: function () {
+                var args = Array.prototype.slice.call(arguments);
+                return this.setScene.apply(this, args);
+            },
+            defaultPage: function (path, data) {
+                this._defaultPage = path;
+                // register if not found
+                if(!this.isScene(path))
+                    this.register(path);
+                return this.show(path, data);
+            }
+        });
+
+        /**
+         * Events
+         */
+
+        return module.exports = PagesManager;
+    });
 
 /**
  * PagesManager
@@ -13,7 +60,7 @@ var isRenderable = function (obj) {
  * @extends {}
  * @status v0.3.0
  */
-define('famodev/app/PagesManager', [
+define('famodev/app/PagesManager2', [
     'require', 
     'exports',
     'module'

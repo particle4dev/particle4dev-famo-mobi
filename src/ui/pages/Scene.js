@@ -40,7 +40,7 @@ define('famodev/ui/pages/Scene', [
             });
         if(!optionsScene.outTransform)
             this.setOptions({
-                outTransform: Transitions.out.fadeRight
+                outTransform: Transitions.out.fadeOut
             });
     }
 
