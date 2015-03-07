@@ -38,14 +38,11 @@ define('famodev/app/EventsCenter', [
             return (tmp[1]);
         }
 
-        server.listen = server.on;
-        server.trigger = server.emit;
-
         return module.exports = {
-            'trigger': server.trigger.bind(server),
+            'trigger': server.emit.bind(server),
             'emit': server.emit.bind(server),
 
-            'listen': server.listen.bind(server),
+            'listen': server.on.bind(server),
             'on': server.on.bind(server),
             'addListener': server.addListener.bind(server),
 

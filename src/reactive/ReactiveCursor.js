@@ -111,6 +111,12 @@ define('famodev/reactive/ReactiveCursor',[
             get: function () {
                 return this._result;
             },
+            set: function (data) {
+                this.stop();
+                setTimeout(function(){
+                    handCursor.call(this, data);
+                }.bind(this), 0);
+            },
             stop: function () {
                 if(this._observeHandle && this._observeHandle.stop) {
                     this._observeHandle.stop();
