@@ -30,74 +30,78 @@ define('famodev/ui/papers/PapersSystem', [
      */
     _.extend(PapersSystem.prototype, {
         register: function (name, renderable) {
-            this._renderablesStore.set(name, new Paper(name, renderable));
+            this._renderablesStore.set(name, renderable);
         },
-        show: function (name, callback) {
+        show: function (name, options, callback) {
             // NOTE: right now we not allow to call show twice
             // or show paper twice
-            if(this._isRunning) {
+            if(_.isFunction(options)) {
+                callback = options;
+                options = {};
+            }
+            if(_.isUndefined(options) || _.isNull(options))
+                options = {};
+
+            if(this.findRenderable(name, options)) {
+                console.warn('paper show is showed');
+                return;
+            }
+            var paperClass  = this._renderablesStore.get(name);
+            var paperObject = new paperClass(options);
+            var paper = new Paper(name, paperObject);
+            paper.setOptions(options);
+
+            if(this._isRunningShow) {
                 console.warn('paper show is running');
                 return;
             }
-            this._isRunning = true;
+            this._isRunningShow = true;
             Engine.nextTick(function() {
-                var lastPaper = this._renderables[this._renderables.length -1];
-                if(lastPaper && lastPaper.getName() == name) {
-                    console.warn(name + " has really opened");
-                    return;
-                }
-                var paper = this._renderablesStore.get(name);
+                
                 var index = this._renderables.length * 10;
                 paper.setZIndex(index);
-                if(lastPaper && lastPaper.setScale) {
-                    lastPaper.setScale(0.95, function () {
-                        lastPaper.turnOffRenderOnPage();
-                    });
-                }
                 this._renderables.push(paper);
                 if(this.onShow)
                     this.onShow();
 
                 var self = this;
                 paper.show(function () {
-                    self._isRunning = false;
+                    self._isRunningShow = false;
                     if(_.isFunction(callback))
                         callback();
                 });
             }.bind(this));
+            return paper;
         },
-        hide: function (name, callback) {
+        hide: function (name, options, callback) {
             // NOTE: right now we not allow to call show when is running
-            if(this._isRunning) {
+            if(_.isFunction(options)) {
+                callback = options;
+                options = {};
+            }
+            if(_.isUndefined(options) || _.isNull(options))
+                options = {};
+            if(this._isRunningHide) {
                 console.warn('paper hide is running');
                 return;
             }
-            this._isRunning = true;
+            this._isRunningHide = true;
             var paper;
             if(_.isUndefined(name)) 
                 paper = this._renderables[this._renderables.length - 1];
-            else
-                paper = this._renderablesStore.get(name);
-            var lastPaper = this._renderables[this._renderables.length -2];
-            if(lastPaper && lastPaper.setScale) {
-                lastPaper.turnOnRenderOnPage();
-                lastPaper.setScale(1);
+            else {
+                paper = this.findRenderable(name, options);
             }
             if(this.onHide)
                 this.onHide();
             paper.hide(function(){
-                // remove
-                // this._renderablesStore.remove(name); // no remove on register, paper can be show again
-                
-                // DOESNT WORK; the dom doesn't removed from document (body) why ???
-                // this._renderables = _.without(this._renderables, paper);
-                this._isRunning = false;
+                this._isRunningHide = false;
                 Engine.nextTick(function() {
                     var index = this._renderables.indexOf(paper);
-                    if (index > -1) {
+                    paper.setZIndex(0);
+                    if (index != -1) {
                         this._renderables.splice(index, 1);
                     }
-                    paper.setZIndex(0);
                 }.bind(this));
                 if(_.isFunction(callback))
                     callback();
@@ -125,11 +129,27 @@ define('famodev/ui/papers/PapersSystem', [
             };
             return result;
         },
+
         // FIXME: check this function
         reset: function(){
             while(this._renderables.length > 0) {
                 this._renderables.pop();
             }
+        },
+
+        findRenderable: function (name, options) {
+            var result;
+            for (var i = 0; this._renderables.length > i; i++) {
+                if(this._renderables[i].getName() === name) {
+                    if(EJSON.equals(options, this._renderables[i].getOptions(), {
+                        keyOrderSensitive: false
+                    })) {
+                        result = this._renderables[i];
+                        break;
+                    }
+                }
+            };
+            return result;
         }
     });
 

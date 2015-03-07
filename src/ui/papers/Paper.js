@@ -152,6 +152,17 @@ define('famodev/ui/papers/Paper', [
         },
 
         /**
+         * Options
+         */
+        setOptions: function (options) {
+            this.__options = options;
+        },
+        getOptions: function () {
+            return this.__options;
+        },
+
+
+        /**
          * Hide paper on screen, browser will be ignored and not painted this page.
          *
          * @private
@@ -191,7 +202,7 @@ define('famodev/ui/papers/Paper', [
          *  @method destroy
          */
         destroy: function destroy() {
-            console.log('remove dom FIXXXMMMMMMMMMEEEEEEEEEEEEE', this.id);
+            console.log('remove dom FIXXXMMMMMMMMMEEEEEEEEEEEEE (use scene)', this.id);
             // Engine.nextTick( Entity.unregister.bind({}, this.id ));
         }
     });

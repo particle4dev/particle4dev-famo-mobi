@@ -41,7 +41,8 @@ if(typeof ir !== 'undefined' && ir.RouteController) {
                     'famodev/app/EventsCenter'
                 ],
                 function(EventsCenter) {
-                    EventsCenter.trigger('switchPage#views/pages/LoadingPage');
+                    if(self.page)
+                        EventsCenter.trigger('switchPage#views/pages/LoadingPage');
                 });
             }
             return self.ready();
