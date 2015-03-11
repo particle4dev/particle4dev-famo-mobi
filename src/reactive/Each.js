@@ -424,7 +424,32 @@ define('famodev/reactive/Each',[
         removeSpec: {
             // render-spec used when removing renderables
             transform: Transform.translate(window.innerWidth, 0, 0)
-        }
+        },
+        data: function() {
+            return Items.find({}, {
+                sort: {
+                    text: 1
+                },
+                limit: 20
+            });
+        },
+        autoPipeEvents: true // default
     });
+
+
+    var each = new Each({
+        insertSpec: Transitions.in.fadeIn,
+        removeSpec: Transitions.out.fadeOut,
+        data: function() {
+            return Items.find({}, {
+                sort: {
+                    text: 1
+                },
+                limit: 20
+            });
+        },
+        autoPipeEvents: true // default
+    });
+    
 
  */

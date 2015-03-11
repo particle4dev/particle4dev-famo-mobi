@@ -1,6 +1,6 @@
 Package.describe({
     summary: "open source front-end framework for developing mobile apps with famous and meteor",
-    version: "0.9.0-rc1",
+    version: "0.9.1",
     name: "particle4dev:famo-mobi",
     git: "https://particle4dev@bitbucket.org/particle4devs-team/famo-mobi.git"
 });
@@ -59,7 +59,6 @@ Package.on_use(function(api) {
         // ui
         'src/ui/tabs/TabBar.js', // upgraded
         'src/ui/tabs/TabButton.js', // upgraded
-        'src/ui/Slidershow.js', // upgraded [DEPRECATED]
         'src/ui/Button.js', // upgraded stable v0.3.0
 
         'src/ui/RippleEffect.js', // upgraded
@@ -77,8 +76,6 @@ Package.on_use(function(api) {
         'src/ui/pages/SceneController.js',
         'src/ui/pages/Transitions.js',
         // 'src/ui/pages/test.js',
-        // 'src/ui/PagesManager.js', // [DEPRECATED] draft v0.4.0
-
 
         // from famous carousel
 

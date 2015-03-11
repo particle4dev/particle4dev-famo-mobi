@@ -115,6 +115,32 @@ define('famodev/ui/pages/Transitions', [
                 modifier.setTransform( Transform.translate(0, window.innerHeight, 0) );
                 modifier.setTransform( Transform.identity, curve, callback);
             },
+            flipX: function (callback, curve) {
+                var modifier = this.getActiveModifier();
+                curve = curve ? curve : {
+                    curve       : Easing.inOutExpoNorm,
+                    duration    : 350
+                };
+
+                modifier.halt();
+                modifier.setOrigin([.5, .5]);
+                modifier.setAlign([.5, .5]);
+                modifier.setTransform( Transform.rotateX(Math.PI/2) );
+                modifier.setTransform( Transform.rotateX(0), curve, callback);
+            },
+            flipY: function (callback, curve) {
+                var modifier = this.getActiveModifier();
+                curve = curve ? curve : {
+                    curve       : Easing.inOutExpoNorm,
+                    duration    : 350
+                };
+
+                modifier.halt();
+                modifier.setOrigin([.5, .5]);
+                modifier.setAlign([.5, .5]);
+                modifier.setTransform( Transform.rotateY(Math.PI/2) );
+                modifier.setTransform( Transform.rotateY(0), curve, callback);
+            }
         },
 
         out: {
@@ -190,6 +216,32 @@ define('famodev/ui/pages/Transitions', [
                 modifier.setTransform( Transform.identity );
                 modifier.setTransform( Transform.translate(0, window.innerHeight, 0), curve, callback);
             },
+            flipX: function (callback, curve) {
+                var modifier = this.getActiveModifier();
+                curve = curve ? curve : {
+                    curve       : Easing.inOutExpoNorm,
+                    duration    : 350
+                };
+
+                modifier.halt();
+                modifier.setOrigin([.5, .5]);
+                modifier.setAlign([.5, .5]);
+                modifier.setTransform( Transform.rotateX(0) );
+                modifier.setTransform( Transform.rotateX(Math.PI/2), curve, callback);
+            },
+            flipY: function (callback, curve) {
+                var modifier = this.getActiveModifier();
+                curve = curve ? curve : {
+                    curve       : Easing.inOutExpoNorm,
+                    duration    : 350
+                };
+
+                modifier.halt();
+                modifier.setOrigin([.5, .5]);
+                modifier.setAlign([.5, .5]);
+                modifier.setTransform( Transform.rotateY(0) );
+                modifier.setTransform( Transform.rotateY(Math.PI/2), curve, callback);
+            }
         }
     };
 });

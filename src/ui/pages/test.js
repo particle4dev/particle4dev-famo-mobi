@@ -35,8 +35,8 @@ define('famodev/ui/pages/tests/Page', [
         Page.prototype = Object.create(Scene.prototype);
         Page.prototype.constructor = Page;
         Page.DEFAULT_OPTIONS = {
-            inTransform: Transitions.in.slideUp,
-            outTransform: Transitions.out.slideDown
+            inTransform: Transitions.in.flipY,
+            outTransform: Transitions.out.flipY
         };
 
         /**
@@ -178,7 +178,7 @@ Meteor.startup(function () {
         var StateModifier       = famous.modifiers.StateModifier;
 
         var SceneController     = require('famodev/ui/pages/SceneController');
-        var Page               = require('famodev/ui/pages/tests/Page');
+        var Page                = require('famodev/ui/pages/tests/Page');
 
         var mainContext = Engine.createContext();
 
