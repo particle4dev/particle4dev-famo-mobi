@@ -42,6 +42,9 @@ define('famodev/app/PagesManager', [
                 if(!this.isScene(path))
                     this.register(path);
                 return this.show(path, data);
+            },
+            getCurrentScene: function () {
+                return this.activeScene;
             }
         });
 
