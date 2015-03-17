@@ -6,6 +6,7 @@ define('famodev/ui/pages/Transitions', [
     ], function(require, exports, module) {
     var Easing          = famous.transitions.Easing;
     var Transform       = famous.core.Transform;
+    var Utility         = famous.utilities.Utility;
 
     module.exports = {
 
@@ -138,8 +139,34 @@ define('famodev/ui/pages/Transitions', [
                 modifier.halt();
                 modifier.setOrigin([.5, .5]);
                 modifier.setAlign([.5, .5]);
+                modifier.setOpacity(1);
+
                 modifier.setTransform( Transform.rotateY(Math.PI/2) );
                 modifier.setTransform( Transform.rotateY(0), curve, callback);
+            },
+            zoomIn: function (callback, curve) {
+                var modifier = this.getActiveModifier();
+                curve = curve ? curve : {
+                    curve       : Easing.inOutExpoNorm,
+                    duration    : 350
+                };
+                var _cb = callback ? Utility.after(2, function(){
+                    callback();
+                }) : Utility.after(2, function(){});
+
+                // start
+                modifier.halt();
+                modifier.setOrigin([.5, .5]);
+                modifier.setAlign([.5, .5]);
+                modifier.setOpacity(0);
+                modifier.setTransform(Transform.multiply(
+                    Transform.scale(2, 2, 1),
+                    Transform.translate(0, 0, 0)
+                ));
+
+                // run
+                modifier.setOpacity(1, curve, _cb);
+                modifier.setTransform(Transform.scale(1, 1, 1), curve, _cb);
             }
         },
 
@@ -239,8 +266,39 @@ define('famodev/ui/pages/Transitions', [
                 modifier.halt();
                 modifier.setOrigin([.5, .5]);
                 modifier.setAlign([.5, .5]);
+                modifier.setOpacity(1);
+
                 modifier.setTransform( Transform.rotateY(0) );
                 modifier.setTransform( Transform.rotateY(Math.PI/2), curve, callback);
+            },
+
+            zoomOut: function (callback, curve) {
+                var modifier = this.getActiveModifier();
+                curve = curve ? curve : {
+                    curve       : Easing.inOutExpoNorm,
+                    duration    : 350
+                };
+                modifier.halt();
+
+                var _cb = callback ? Utility.after(2, function(){
+                    callback();
+
+                }) : Utility.after(2, function(){
+
+                });
+
+                // start
+                modifier.setOrigin([.5, .5]);
+                modifier.setAlign([.5, .5]);
+                modifier.setOpacity(1);
+                modifier.setTransform(Transform.multiply(
+                    Transform.scale(1, 1, 1),
+                    Transform.translate(0, 0, 0)
+                ));
+
+                // run
+                modifier.setOpacity(0, curve, _cb);
+                modifier.setTransform(Transform.scale(2, 2, 1), curve, _cb);
             }
         }
     };

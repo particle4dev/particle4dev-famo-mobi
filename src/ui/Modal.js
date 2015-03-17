@@ -1,11 +1,10 @@
-/**
- * version 0.1
- */
 // https://github.com/driftyco/ionic/blob/v1.0.0-beta.6/scss/_popup.scss
 define('famodev/Modals', [
     'require', 
     'exports',
-    'module'
+    'module',
+
+    'famodev/ui/pages/Transitions',
     ], function(require, exports, module){
 
         var View               = famous.core.View;
@@ -21,6 +20,8 @@ define('famodev/Modals', [
         
         var Utility                 = famous.utilities.Utility;
         var RenderController        = famous.views.RenderController;
+
+        var Transitions             = require('famodev/ui/pages/Transitions');
 
         function Modal () {
             View.apply(this, arguments);
@@ -107,10 +108,15 @@ define('famodev/Modals', [
         isShow    = false,
         modifiers = {},
         modals    = {},
+        animations= {},
         _backdropModifier = null,
-        _boxModifier = null,
         _containerModalModifier = null,
         _boxSurface = null;
+
+        var boxModifier,
+        currentKey,
+        modalInstance;
+
         // add views
         function _createBackdrop () {
             var backdropSurface = new Surface({
@@ -143,26 +149,18 @@ define('famodev/Modals', [
             backdropSurface.on('click', function (event) {
                 if(!isShow)
                     return ;
-                hide();
+                hide.call(modalInstance);
                 isShow = false;
             });
         }
+
         function _createBox(){
             _boxSurface = new Modal();
 
-            _boxModifier = {
-                transform: new TransitionableTransform(_status.inTransform),
-                opacity: new Transitionable(_status.inOpacity),
-                origin: new Transitionable(_status.inOrigin),
-                align: new Transitionable([0.5, 0.5])
-            };
-
-            var boxModifier = new Modifier({
-                transform: _boxModifier.transform,
-                opacity: _boxModifier.opacity,
-                origin: _boxModifier.origin,
-                align: _boxModifier.align,
-                size: [undefined, undefined]
+            boxModifier = new Modifier({
+                size: [undefined, undefined],
+                align: [.5, .5],
+                origin: [.5, .5],
             });
 
             var node = new RenderNode();
@@ -171,31 +169,33 @@ define('famodev/Modals', [
         }
 
         // animation
-        function show (callback) {
-            var _cb = callback ? Utility.after(3, callback) : undefined;
-            _backdropModifier.transform.set(Transform.scale(1, 1, 1));
-            _boxModifier.transform.set(Transform.multiply(Transform.scale(2, 2, 1), Transform.translate(0, 0, 0)));
+        function show (callback, key) {
+            var _cb = callback ? Utility.after(2, callback) : undefined;
 
+            var animation = animations[key];
+            animation.inTransform.call(this, _cb);
+
+            _backdropModifier.transform.set(Transform.scale(1, 1, 1));
             _backdropModifier.opacity.set(0.5, { duration: 200, curve: 'easeInOut'}, _cb);
-            _boxModifier.opacity.set(1, { duration: 300, curve: 'easeInOut'}, _cb);
-            _boxModifier.transform.set(Transform.scale(1, 1, 1), { duration: 300, curve: 'easeInOut'}, _cb);
         }
         function hide (callback) {
-            var _cb = callback ? Utility.after(3, function(){
+            var _cb = callback ? Utility.after(2, function(){
                 callback();
                 _backdropModifier.transform.set(_status.outTransform);
-                _boxModifier.transform.set(_status.outTransform);
-            }) : Utility.after(3, function(){
+                currentKey = null;
+            }) : Utility.after(2, function(){
                 _backdropModifier.transform.set(_status.outTransform);
-                _boxModifier.transform.set(_status.outTransform);
+                currentKey = null;
             });
 
-            _backdropModifier.opacity.set(0, { duration: 200, curve: 'easeInOut'}, _cb);
-            _boxModifier.opacity.set(0, { duration: 300, curve: 'easeInOut'}, _cb);
-            _boxModifier.transform.set(Transform.scale(2, 2, 1), { duration: 300, curve: 'easeInOut'}, _cb);
+            var animation = animations[currentKey];
+            animation.outTransform.call(this, _cb);
+
+            _backdropModifier.transform.set(Transform.scale(1, 1, 1));
+            _backdropModifier.opacity.set(0, { duration: 350, curve: 'easeInOut'}, _cb);
         }
 
-        //start
+        // start
         _createBackdrop();
         _createBox();
         //_createContainerModal();
@@ -203,24 +203,32 @@ define('famodev/Modals', [
         /**
          * singleton pattern
          */
-        module.exports = {
-            register: function(key, renderable) {
+        modalInstance = {
+            register: function(key, renderable, animation) {
+                if(animation)
+                    animations[key] = animation;
+                else 
+                    animations[key] = {
+                        inTransform: Transitions.in.zoomIn,
+                        outTransform: Transitions.out.zoomOut
+                    };
                 modals[key] = renderable;
             },
-
             show: function(key, cb) {
                 if(isShow)
                     return this.hide.call(this, function () {
                         this.show(key, cb);
                     }.bind(this));
                 _boxSurface.show(modals[key]);
-                show(cb);
+                show.call(this, cb, key);
                 isShow = true;
+
+                currentKey = key;
             },
             hide: function(cb) {
                 if(!isShow)
                     return ;
-                hide(cb);
+                hide.call(this, cb);
                 isShow = false;
             },
             /**
@@ -237,6 +245,9 @@ define('famodev/Modals', [
                 }
                 return result;
             },
+            getActiveModifier: function () {
+                return boxModifier;
+            },
             getInstance: function () {
 
             },
@@ -247,5 +258,25 @@ define('famodev/Modals', [
 
             }
         };
-
+        module.exports = modalInstance;
 });
+
+/**
+ CODE STYLE
+Meteor.startup(function () {
+    require([
+        'famodev/Modals',
+        'famodev/reactive/ReactiveTemplate',
+        'famodev/ui/pages/Transitions',
+    ],
+    function(Modals, ReactiveTemplate, Transitions){
+        Modals.register('scheduleOpenHouse', new ReactiveTemplate({
+            size: [undefined, 276],
+            template: Template.scheduleOpenHouseModal
+        }), {
+            inTransform: Transitions.in.zoomIn,
+            outTransform: Transitions.out.zoomOut
+        });
+    });
+});
+*/
