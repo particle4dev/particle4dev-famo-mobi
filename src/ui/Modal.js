@@ -142,7 +142,12 @@ define('famodev/Modals', [
             });
 
             var node = new RenderNode();
-            node.add(backdropModifier).add(backdropSurface);
+            node
+            .add(new Modifier({
+                transform: Transform.translate(0, 0, -1)
+            }))
+            .add(backdropModifier)
+            .add(backdropSurface);
             _nodes.push(node);
 
             // attach Event
