@@ -124,8 +124,6 @@ define('famodev/ui/pages/Transitions', [
                 };
 
                 modifier.halt();
-                modifier.setOrigin([.5, .5]);
-                modifier.setAlign([.5, .5]);
                 modifier.setTransform( Transform.rotateX(Math.PI/2) );
                 modifier.setTransform( Transform.rotateX(0), curve, callback);
             },
@@ -137,8 +135,6 @@ define('famodev/ui/pages/Transitions', [
                 };
 
                 modifier.halt();
-                modifier.setOrigin([.5, .5]);
-                modifier.setAlign([.5, .5]);
                 modifier.setOpacity(1);
 
                 modifier.setTransform( Transform.rotateY(Math.PI/2) );
@@ -156,8 +152,6 @@ define('famodev/ui/pages/Transitions', [
 
                 // start
                 modifier.halt();
-                modifier.setOrigin([.5, .5]);
-                modifier.setAlign([.5, .5]);
                 modifier.setOpacity(0);
                 modifier.setTransform(Transform.multiply(
                     Transform.scale(2, 2, 1),
@@ -251,8 +245,6 @@ define('famodev/ui/pages/Transitions', [
                 };
 
                 modifier.halt();
-                modifier.setOrigin([.5, .5]);
-                modifier.setAlign([.5, .5]);
                 modifier.setTransform( Transform.rotateX(0) );
                 modifier.setTransform( Transform.rotateX(Math.PI/2), curve, callback);
             },
@@ -264,8 +256,6 @@ define('famodev/ui/pages/Transitions', [
                 };
 
                 modifier.halt();
-                modifier.setOrigin([.5, .5]);
-                modifier.setAlign([.5, .5]);
                 modifier.setOpacity(1);
 
                 modifier.setTransform( Transform.rotateY(0) );
@@ -288,8 +278,6 @@ define('famodev/ui/pages/Transitions', [
                 });
 
                 // start
-                modifier.setOrigin([.5, .5]);
-                modifier.setAlign([.5, .5]);
                 modifier.setOpacity(1);
                 modifier.setTransform(Transform.multiply(
                     Transform.scale(1, 1, 1),

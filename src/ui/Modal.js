@@ -27,15 +27,13 @@ define('famodev/Modals', [
             View.apply(this, arguments);
 
             this._containerView = new ContainerSurface({
-                size: [window.innerWidth - 40, true],
+                size: [undefined, true],
                 properties: {
                     overflow: 'hidden',
                     zIndex: "1050" // from bootstrap
                 }
             });
-            this._containerModifier = new StateModifier({
-                origin: [0.5, 0.5],
-                align: [0.5, 0.5]
+            this._containerModifier = new Modifier({
             });
             this._add(this._containerModifier).add(this._containerView);
 
@@ -66,8 +64,6 @@ define('famodev/Modals', [
         function createContainerModal () {
             _containerModal = new RenderController();
             _containerModalModifier = new StateModifier({
-                origin: [0.5, 0.5],
-                align: [0.5, 0.5],
                 opacity: 1
             });
             this._containerView.add(_containerModalModifier).add(_containerModal);
@@ -80,10 +76,14 @@ define('famodev/Modals', [
             _containerModal.show(renderable);
             var size = renderable.size;
             if(size) {
-                size = [window.innerWidth - 40, size[1]];
+                size = [size[0], size[1]];
                 this._bg.setSize(size);
                 this._containerView.setSize(size);
             }
+        };
+
+        Modal.prototype.getContainerModifier = function () {
+            return this._containerModifier;
         };
 
         /**
@@ -156,30 +156,28 @@ define('famodev/Modals', [
 
         function _createBox(){
             _boxSurface = new Modal();
-
-            boxModifier = new Modifier({
-                size: [undefined, undefined],
-                align: [.5, .5],
-                origin: [.5, .5],
-            });
-
-            var node = new RenderNode();
-            node.add(boxModifier).add(_boxSurface);
-            _nodes.push(node);
+            boxModifier = _boxSurface.getContainerModifier();
+            _nodes.push(_boxSurface);
         }
 
         // animation
         function show (callback, key) {
-            var _cb = callback ? Utility.after(2, callback) : undefined;
+            var _cb = callback ? Utility.after(4, callback) : undefined;
 
             var animation = animations[key];
-            animation.inTransform.call(this, _cb);
+            var curve = animation.curve;
+            boxModifier.setOrigin(animation.inOrigin);
+            boxModifier.setAlign(animation.inAlign);
+
+            animation.inTransform.call(this, _cb, curve);
+            boxModifier.setOrigin(animation.showOrigin, curve, _cb);
+            boxModifier.setAlign(animation.showAlign, curve, _cb);
 
             _backdropModifier.transform.set(Transform.scale(1, 1, 1));
-            _backdropModifier.opacity.set(0.5, { duration: 200, curve: 'easeInOut'}, _cb);
+            _backdropModifier.opacity.set(0.5, curve, _cb);
         }
         function hide (callback) {
-            var _cb = callback ? Utility.after(2, function(){
+            var _cb = callback ? Utility.after(4, function(){
                 callback();
                 _backdropModifier.transform.set(_status.outTransform);
                 currentKey = null;
@@ -189,28 +187,90 @@ define('famodev/Modals', [
             });
 
             var animation = animations[currentKey];
-            animation.outTransform.call(this, _cb);
+            var curve = animation.curve;
+            boxModifier.setOrigin(animation.showOrigin);
+            boxModifier.setAlign(animation.showAlign);
+
+            animation.outTransform.call(this, _cb, curve);
+            boxModifier.setOrigin(animation.outOrigin, curve, _cb);
+            boxModifier.setAlign(animation.outAlign, curve, _cb);
 
             _backdropModifier.transform.set(Transform.scale(1, 1, 1));
-            _backdropModifier.opacity.set(0, { duration: 350, curve: 'easeInOut'}, _cb);
+            _backdropModifier.opacity.set(0, curve, _cb);
         }
 
         // start
         _createBackdrop();
         _createBox();
-        //_createContainerModal();
-
         /**
          * singleton pattern
          */
         modalInstance = {
             register: function(key, renderable, animation) {
-                if(animation)
-                    animations[key] = animation;
-                else 
+                // FIXME: validate
+
+                animations[key] = {};
+
+                if(animation) {
+                    if(animation.inTransform)
+                        animations[key].inTransform = animation.inTransform;
+                    else
+                        animations[key].inTransform = Transitions.in.zoomIn;
+
+                    if(animation.outTransform)
+                        animations[key].outTransform = animation.outTransform;
+                    else
+                        animations[key].outTransform = Transitions.in.zoomOut;
+
+                    if(animation.inOrigin)
+                        animations[key].inOrigin = animation.inOrigin;
+                    else
+                        animations[key].inOrigin = [.5, .5];
+
+                    if(animation.outOrigin)
+                        animations[key].outOrigin = animation.outOrigin;
+                    else
+                        animations[key].outOrigin = [.5, .5];
+
+                    if(animation.showOrigin)
+                        animations[key].showOrigin = animation.showOrigin;
+                    else
+                        animations[key].showOrigin = [.5, .5];
+
+                    if(animation.inAlign)
+                        animations[key].inAlign = animation.inAlign;
+                    else
+                        animations[key].inAlign = [.5, .5];
+
+                    if(animation.outAlign)
+                        animations[key].outAlign = animation.outAlign;
+                    else
+                        animations[key].outAlign = [.5, .5];
+
+                    if(animation.showAlign)
+                        animations[key].showAlign = animation.showAlign;
+                    else
+                        animations[key].showAlign = [.5, .5];
+
+                    if(animation.curve)
+                        animations[key].curve = animation.curve;
+                    else
+                        animations[key].curve = { duration: 250, curve: 'easeInOut'};
+                }
+                else
                     animations[key] = {
                         inTransform: Transitions.in.zoomIn,
-                        outTransform: Transitions.out.zoomOut
+                        outTransform: Transitions.out.zoomOut,
+
+                        inOrigin: [.5, .5],
+                        outOrigin: [.5, .5],
+                        showOrigin: [.5, .5],
+
+                        inAlign: [.5, .5],
+                        outAlign: [.5, .5],
+                        showAlign: [.5, .5],
+
+                        curve: { duration: 250, curve: 'easeInOut'}
                     };
                 modals[key] = renderable;
             },
@@ -274,8 +334,15 @@ Meteor.startup(function () {
             size: [undefined, 276],
             template: Template.scheduleOpenHouseModal
         }), {
-            inTransform: Transitions.in.zoomIn,
-            outTransform: Transitions.out.zoomOut
+            inTransform: Transitions.in.flipX,
+            outTransform: Transitions.out.flipX,
+            inOrigin: [.5, .5],
+            outOrigin: [.0, .0],
+            showOrigin: [.5, .5],
+
+            inAlign: [.5, .5],
+            outAlign: [.5, .5],
+            showAlign: [.5, .5]
         });
     });
 });
