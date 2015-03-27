@@ -27,7 +27,7 @@ define('famodev/Modals', [
             View.apply(this, arguments);
 
             this._containerView = new ContainerSurface({
-                size: [undefined, true],
+                size: [undefined, undefined],
                 properties: {
                     overflow: 'hidden',
                     zIndex: "1050" // from bootstrap
@@ -37,7 +37,6 @@ define('famodev/Modals', [
             });
             this._add(this._containerModifier).add(this._containerView);
 
-            createBackground.call(this);
             createContainerModal.call(this);
         }
         Modal.prototype = Object.create(View.prototype);
@@ -49,18 +48,6 @@ define('famodev/Modals', [
         /**
          * Add Views
          */
-        function createBackground () {
-            this._bg = new Surface({
-                properties: {
-                    borderRadius: "0px",
-                    backgroundColor: "rgba(255, 255, 255, 0.9)",
-                    boxShadow: '0 10px 20px -5px rgba(0, 0, 0, 0.5)',
-                    minHeight: "50px"
-                }
-            });
-            this._containerView.add(this._bg);
-        }
-
         function createContainerModal () {
             _containerModal = new RenderController();
             _containerModalModifier = new StateModifier({
@@ -72,19 +59,21 @@ define('famodev/Modals', [
         /**
          * Methods
          */
-        Modal.prototype.show = function (renderable) {
-            _containerModal.show(renderable);
-            var size = renderable.size;
-            if(size) {
-                size = [size[0], size[1]];
-                this._bg.setSize(size);
-                this._containerView.setSize(size);
+        _.extend(Modal.prototype, {
+            rendered: function () {},
+            destroyed: function () {},
+            show: function (renderable) {
+                _containerModal.show(renderable);
+                var size = renderable.size;
+                if(size) {
+                    size = [size[0], size[1]];
+                    this._containerView.setSize(size);
+                }
+            },
+            getContainerModifier: function () {
+                return this._containerModifier;
             }
-        };
-
-        Modal.prototype.getContainerModifier = function () {
-            return this._containerModifier;
-        };
+        });
 
         /**
          * Events
