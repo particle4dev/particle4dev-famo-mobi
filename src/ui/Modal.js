@@ -7,7 +7,6 @@ define('famodev/Modals', [
     'famodev/ui/pages/Transitions',
     ], function(require, exports, module){
 
-        var View               = famous.core.View;
         var Modifier           = famous.core.Modifier;
         var RenderNode         = famous.core.RenderNode;
         var Surface            = famous.core.Surface;
@@ -24,53 +23,32 @@ define('famodev/Modals', [
         var Transitions             = require('famodev/ui/pages/Transitions');
 
         function Modal () {
-            View.apply(this, arguments);
-
-            this._containerView = new ContainerSurface({
-                size: [undefined, undefined],
-                properties: {
-                    overflow: 'hidden',
-                    zIndex: "1050" // from bootstrap
-                }
-            });
-            this._containerModifier = new Modifier({
-            });
-            this._add(this._containerModifier).add(this._containerView);
-
-            createContainerModal.call(this);
+            RenderNode.apply(this, arguments);
         }
-        Modal.prototype = Object.create(View.prototype);
+        Modal.prototype = Object.create(RenderNode.prototype);
         Modal.prototype.constructor = Modal;
         Modal.DEFAULT_OPTIONS = {};
-
-        var _containerModal = null;
 
         /**
          * Add Views
          */
-        function createContainerModal () {
-            _containerModal = new RenderController();
-            _containerModalModifier = new StateModifier({
-                opacity: 1
-            });
-            this._containerView.add(_containerModalModifier).add(_containerModal);
-        }
 
         /**
          * Methods
          */
         _.extend(Modal.prototype, {
-            rendered: function () {},
-            destroyed: function () {},
-            show: function (renderable) {
-                _containerModal.show(renderable);
-                var size = renderable.size;
-                if(size) {
-                    size = [size[0], size[1]];
-                    this._containerView.setSize(size);
-                }
+            addRenderable: function (renderable) {
+                if(this._renderable)
+                    throw new Error('renderable was setted');
+                this._containerModifier = new Modifier({
+                    size: [undefined, true]
+                });
+                this._renderable = renderable;
+                this
+                .add(this._containerModifier)
+                .add(this._renderable);
             },
-            getContainerModifier: function () {
+            getActiveModifier: function () {
                 return this._containerModifier;
             }
         });
@@ -98,12 +76,9 @@ define('famodev/Modals', [
         modifiers = {},
         modals    = {},
         animations= {},
-        _backdropModifier = null,
-        _containerModalModifier = null,
-        _boxSurface = null;
+        _backdropModifier = null;
 
-        var boxModifier,
-        currentKey,
+        var currentKey,
         modalInstance;
 
         // add views
@@ -133,7 +108,7 @@ define('famodev/Modals', [
             var node = new RenderNode();
             node
             .add(new Modifier({
-                transform: Transform.translate(0, 0, -1)
+                transform: Transform.translate(0, 0, -99)
             }))
             .add(backdropModifier)
             .add(backdropSurface);
@@ -148,22 +123,23 @@ define('famodev/Modals', [
             });
         }
 
-        function _createBox(){
-            _boxSurface = new Modal();
-            boxModifier = _boxSurface.getContainerModifier();
-            _nodes.push(_boxSurface);
-        }
-
         // animation
         function show (callback, key) {
             var _cb = callback ? Utility.after(4, callback) : undefined;
+            _nodes.push(modals[key]);
 
             var animation = animations[key];
             var curve = animation.curve;
+            
+            // start
+            var boxModifier = modals[key].getActiveModifier();
+            var size = modals[key]._renderable.getSize(true);
+            boxModifier.setSize(size);
             boxModifier.setOrigin(animation.inOrigin);
             boxModifier.setAlign(animation.inAlign);
 
-            animation.inTransform.call(this, _cb, curve);
+            // show
+            animation.inTransform.call(modals[key], _cb, curve);
             boxModifier.setOrigin(animation.showOrigin, curve, _cb);
             boxModifier.setAlign(animation.showAlign, curve, _cb);
 
@@ -174,18 +150,25 @@ define('famodev/Modals', [
             var _cb = callback ? Utility.after(4, function(){
                 callback();
                 _backdropModifier.transform.set(_status.outTransform);
+                _nodes.pop();
                 currentKey = null;
             }) : Utility.after(2, function(){
                 _backdropModifier.transform.set(_status.outTransform);
+                _nodes.pop();
                 currentKey = null;
             });
 
             var animation = animations[currentKey];
+            console.log(currentKey);
             var curve = animation.curve;
+            var boxModifier = modals[currentKey].getActiveModifier();
+            
+            // start
             boxModifier.setOrigin(animation.showOrigin);
             boxModifier.setAlign(animation.showAlign);
 
-            animation.outTransform.call(this, _cb, curve);
+            // run
+            animation.outTransform.call(modals[currentKey], _cb, curve);
             boxModifier.setOrigin(animation.outOrigin, curve, _cb);
             boxModifier.setAlign(animation.outAlign, curve, _cb);
 
@@ -195,7 +178,7 @@ define('famodev/Modals', [
 
         // start
         _createBackdrop();
-        _createBox();
+
         /**
          * singleton pattern
          */
@@ -209,12 +192,12 @@ define('famodev/Modals', [
                     if(animation.inTransform)
                         animations[key].inTransform = animation.inTransform;
                     else
-                        animations[key].inTransform = Transitions.in.zoomIn;
+                        animations[key].inTransform = Transitions.in.fadeInLeft;
 
                     if(animation.outTransform)
                         animations[key].outTransform = animation.outTransform;
                     else
-                        animations[key].outTransform = Transitions.in.zoomOut;
+                        animations[key].outTransform = Transitions.in.fadeLeft;
 
                     if(animation.inOrigin)
                         animations[key].inOrigin = animation.inOrigin;
@@ -253,8 +236,8 @@ define('famodev/Modals', [
                 }
                 else
                     animations[key] = {
-                        inTransform: Transitions.in.zoomIn,
-                        outTransform: Transitions.out.zoomOut,
+                        inTransform: Transitions.in.fadeInLeft,
+                        outTransform: Transitions.out.fadeLeft,
 
                         inOrigin: [.5, .5],
                         outOrigin: [.5, .5],
@@ -266,14 +249,17 @@ define('famodev/Modals', [
 
                         curve: { duration: 250, curve: 'easeInOut'}
                     };
-                modals[key] = renderable;
+                var m = new Modal();
+                m.addRenderable(renderable);
+                modals[key] = m;
             },
             show: function(key, cb) {
                 if(isShow)
                     return this.hide.call(this, function () {
                         this.show(key, cb);
                     }.bind(this));
-                _boxSurface.show(modals[key]);
+                boxModifier = modals[key].getActiveModifier();
+
                 show.call(this, cb, key);
                 isShow = true;
 
@@ -299,9 +285,6 @@ define('famodev/Modals', [
                 }
                 return result;
             },
-            getActiveModifier: function () {
-                return boxModifier;
-            },
             getInstance: function () {
 
             },
@@ -313,6 +296,7 @@ define('famodev/Modals', [
             }
         };
         module.exports = modalInstance;
+        window.sda = modalInstance;
 });
 
 /**
