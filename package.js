@@ -18,8 +18,8 @@ Package.on_use(function(api) {
     api.use(['particle4dev:famous@2.0.0'], client);
     api.use(['particle4dev:famous-flex@0.1.9'], client);
 
-    api.use(['particle4dev:sass@1.2.0'], both);
-    api.imply(['particle4dev:sass@1.2.0'], both);
+    api.use(['particle4dev:sass@2.0.1'], both);
+    api.imply(['particle4dev:sass@2.0.1'], both);
     api.use(['iron:router@1.0.7'], client, {weak: true});
 
     api.add_files([
