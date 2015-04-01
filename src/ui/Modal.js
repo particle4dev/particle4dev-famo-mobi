@@ -118,8 +118,10 @@ define('famodev/Modals', [
             backdropSurface.on('click', function (event) {
                 if(!isShow)
                     return ;
-                hide.call(modalInstance);
-                isShow = false;
+                hide.call(modalInstance, function () {
+                    _.isFunction(cb) && cb();
+                    isShow = false;
+                });
             });
         }
 
@@ -260,16 +262,20 @@ define('famodev/Modals', [
                     }.bind(this));
                 boxModifier = modals[key].getActiveModifier();
 
-                show.call(this, cb, key);
-                isShow = true;
+                show.call(this, function () {
+                    _.isFunction(cb) && cb();
+                    isShow = true;
+                }, key);
 
                 currentKey = key;
             },
             hide: function(cb) {
                 if(!isShow)
                     return ;
-                hide.call(this, cb);
-                isShow = false;
+                hide(function () {
+                    _.isFunction(cb) && cb();
+                    isShow = false;
+                });
             },
             /**
              * Generate a render spec from the contents of this component.
