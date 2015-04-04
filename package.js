@@ -12,7 +12,7 @@ var server = ['server'];
 
 Package.on_use(function(api) {
     if (api.versionsFrom)
-        api.versionsFrom('METEOR@0.9.2');
+        api.versionsFrom('1.0');
     api.use(['underscore', 'tracker', 'reactive-var', 'observe-sequence', 'ui', 'blaze', 'templating'], client);
     api.use(['ejson'], both);
     api.use(['particle4dev:famous@2.0.0'], client);
