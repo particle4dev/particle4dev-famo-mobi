@@ -1,6 +1,6 @@
 Package.describe({
     summary: "open source front-end framework for developing mobile apps with famous and meteor",
-    version: "0.11.2",
+    version: "0.11.3",
     name: "particle4dev:famo-mobi",
     git: "https://particle4dev@bitbucket.org/particle4devs-team/famo-mobi.git"
 });
@@ -31,8 +31,8 @@ Package.on_use(function(api) {
 
         'stylesheets/css/ionic.css',
         'stylesheets/css/ionicons.min.css',
-        'stylesheets/css/famous-reset.scss',
-
+        'stylesheets/famous-reset.scss',
+        'stylesheets/main.scss',
         // utils
         'src/utils/helpers.js',
         'src/utils/pipeline.js',
