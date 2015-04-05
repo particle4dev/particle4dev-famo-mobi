@@ -24,12 +24,12 @@ define('famodev/ui/ToggleButton', [
 
     function ToggleButton(options) {
         Surface.apply(this, arguments);
+        var self = this;
 
         this.options.onClasses = options.onClasses;
         this.options.offClasses = options.offClasses;
         this.options.duration = options.duration;
         this.on('click', function () {
-            var self = this;
             _.each(this.options.onClasses, function (cls) {
                 self.addClass(cls);
             });
@@ -45,6 +45,13 @@ define('famodev/ui/ToggleButton', [
                 }); 
             }, this.options.duration);
         }.bind(this));
+
+        _.each(self.options.offClasses, function (cls) {
+            self.addClass(cls);
+        });
+        _.each(self.options.onClasses, function (cls) {
+            self.removeClass(cls);
+        }); 
     }
 
     ToggleButton.prototype = Object.create(Surface.prototype);
