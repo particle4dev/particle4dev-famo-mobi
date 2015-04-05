@@ -1,6 +1,6 @@
 Package.describe({
     summary: "open source front-end framework for developing mobile apps with famous and meteor",
-    version: "0.11.3",
+    version: "0.12.0",
     name: "particle4dev:famo-mobi",
     git: "https://particle4dev@bitbucket.org/particle4devs-team/famo-mobi.git"
 });
@@ -57,6 +57,7 @@ Package.on_use(function(api) {
 
         // ui
         'src/ui/Modal.js', // upgraded
+        'src/ui/ToggleButton.js',
         'src/ui/tabs/TabBar.js', // upgraded
         'src/ui/tabs/TabButton.js', // upgraded
         'src/ui/SizeAwareView.js', // upgraded
