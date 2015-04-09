@@ -119,7 +119,6 @@ define('famodev/Modals', [
                 if(!isShow)
                     return ;
                 hide.call(modalInstance, function () {
-                    _.isFunction(cb) && cb();
                     isShow = false;
                 });
             });
@@ -263,7 +262,8 @@ define('famodev/Modals', [
                 boxModifier = modals[key].getActiveModifier();
 
                 show.call(this, function () {
-                    _.isFunction(cb) && cb();
+                    if(_.isFunction(cb))
+                        cb();
                     isShow = true;
                 }, key);
 
@@ -273,7 +273,8 @@ define('famodev/Modals', [
                 if(!isShow)
                     return ;
                 hide(function () {
-                    _.isFunction(cb) && cb();
+                    if(_.isFunction(cb))
+                        cb();
                     isShow = false;
                 });
             },
