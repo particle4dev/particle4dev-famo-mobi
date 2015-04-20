@@ -50,7 +50,7 @@ define('famodev/reactive/ReactiveCursor',[
                 return;
 
             var self = this;
-            self._cursor.set(parseData(this.options.data));
+            self._cursor.set(parseData(cursor));
             // https://github.com/meteor/meteor/blob/277e19fb4f9bdc37c4bba7f79d1982352bc22f2c/packages/blaze/builtins.js#L75
             self._observeHandle = ObserveSequence.observe(function(){
                 return self._cursor.get();
