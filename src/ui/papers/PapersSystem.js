@@ -94,7 +94,8 @@ define('famodev/ui/papers/PapersSystem', [
             }
             // if not found then stop
             if(!paper) {
-                console.warn('not found paper');
+                console.warn('not found paper: ' + name);
+                this._isRunningHide = false;
                 return;
             }
             if(this.onHide)
