@@ -92,6 +92,11 @@ define('famodev/ui/papers/PapersSystem', [
             else {
                 paper = this.findRenderable(name, options);
             }
+            // if not found then stop
+            if(!paper) {
+                console.warn('not found paper');
+                return;
+            }
             if(this.onHide)
                 this.onHide();
             paper.hide(function(){
