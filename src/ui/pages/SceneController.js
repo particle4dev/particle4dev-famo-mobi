@@ -90,12 +90,16 @@ define('famodev/ui/pages/SceneController', [
      *  @param data {Object} Data to pass.
      */
     SceneController.prototype.setScene = function (key, data) {
-        if (key == this.getCurrentRoute()) return false;
+        if (key == this.getCurrentRoute()){
+            if(_.isFunction(this.activeScene.rendered))
+                this.activeScene.rendered();
+            return false;
+        }
         var newView = this._scenes[key];
 
         if ( typeof newView == 'undefined' ) {
             console.warn( 'No view exists!', key );
-            return;
+            return false;
         }
 
         this.currentRoute = key;

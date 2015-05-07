@@ -52,7 +52,6 @@ define('famodev/ui/pages/Scene', [
      * @method activate
      */
     Scene.prototype.activate = function activate(callback) {
-        console.log('activate scene');
         var optionsScene = this.getOptions();
         optionsScene.inTransform.apply(this, [function () {
             if (callback) callback();
