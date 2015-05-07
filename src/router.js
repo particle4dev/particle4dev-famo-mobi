@@ -7,14 +7,16 @@ if(typeof ir !== 'undefined' && ir.RouteController) {
     FamousController = ir.RouteController.extend({
         page: 'views/pages/NewPage',
         onBeforeAction: function () {
-            if(_.isFunction(this.beforeAction))
-                this.beforeAction();
             if(_.isFunction(runAfter)) {
                 runAfter();
                 runAfter = null;
             }
             if(this.loadingPage())
                 this.next();
+            setTimeout(function(){
+                if(_.isFunction(this.beforeAction))
+                    this.beforeAction();
+            }.bind(this));
         },
         onAfterAction: function () {
             console.log('onAfterAction');
