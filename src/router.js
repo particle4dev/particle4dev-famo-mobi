@@ -11,12 +11,13 @@ if(typeof ir !== 'undefined' && ir.RouteController) {
                 runAfter();
                 runAfter = null;
             }
-            if(this.loadingPage())
-                this.next();
-            setTimeout(function(){
+            
+            // setTimeout(function(){
                 if(_.isFunction(this.beforeAction))
                     this.beforeAction();
-            }.bind(this));
+            // }.bind(this));
+            if(this.loadingPage())
+                this.next();
         },
         onAfterAction: function () {
             console.log('onAfterAction');
