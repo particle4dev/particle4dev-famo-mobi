@@ -62,7 +62,7 @@ define('famodev/ui/Toast', [
             },
             show: function () {
                 if(Toast.IS_SHOW){
-                var t = Toast.toastList.pop();
+                    var t = Toast.toastList.pop();
                     if(t)
                         t.hide(_.bind(function () {
                             this.show();
@@ -168,7 +168,8 @@ define('famodev/ui/Toast', [
                             return _message.get();
                         }
                     });
-                    _messageSurface.on('click', function(){
+                    _messageSurface.on('click', function(evt){
+                        evt.preventDefault();
                         Toast._hide();
                     });
                 }
@@ -194,6 +195,9 @@ define('famodev/ui/Toast', [
                         transform: Transform.translate(0, -100, zIndex)
                     });
                 }
+            },
+            getMessageSurface: function(){
+                return _messageSurface;
             }
         });
 
